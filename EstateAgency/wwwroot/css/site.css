@@ -7,10 +7,7 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
+h2 { font-size: 300%;}
 
 .btn-primary {
   color: #fff;
@@ -69,3 +66,44 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.fancy-gradient {
+    background-image: linear-gradient(to bottom right, #66aa66, #667799);
+}
+
+.black-div {
+    background-color: #292929;
+    color: #afafaf !important;
+}
+
+.transparent-div {
+    background: none;
+    color:aliceblue;
+}
+
+.centralcard {
+    position:absolute;
+    left:50%; 
+    top:50%;
+    transform:translate(-50%, -50%);
+    padding: 2em;
+    background-color: rgba(255,255,255, 0.3);
+    box-shadow: 0px 5px 5px 3px rgba(150,180,200,0.3);
+    border-radius: 7px;
+}
+.sel {
+    font-family: serif;
+    font-size: 120%;
+    font-style: italic;
+    padding: 4px;
+    margin: 1em auto 1em;
+    display: block;
+    background-color: #070708;
+    color: #eeeeee;
+    transition-duration: 0.5s;
+}
+.sel:focus { }
+.sel:hover { background-color: #121218; }
+
+a:hover { text-decoration: none;}
+a:focus { text-decoration: none;}

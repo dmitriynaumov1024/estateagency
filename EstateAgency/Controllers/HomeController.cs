@@ -28,6 +28,11 @@ namespace EstateAgency.Controllers
             return View();
         }
 
+        public IActionResult Homepage()
+        {
+            return View("Homepage");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
