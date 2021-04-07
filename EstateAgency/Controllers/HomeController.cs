@@ -33,6 +33,18 @@ namespace EstateAgency.Controllers
             return View("Homepage");
         }
 
+        [HttpGet("/Login")]
+        public IActionResult LoginGet()
+        {
+            return View("Login");
+        }
+
+        [HttpPost("/Login")]
+        public IActionResult LoginPost(string phone, string password)
+        {
+            return View("Error");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

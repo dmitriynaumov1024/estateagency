@@ -13,17 +13,21 @@
 </head>
 <body class="fancy-gradient">
     <div class="container">
-        <div class="centralcard" style="text-align:center;">
-            <h2>Estate agency</h2>
+        <div class="centralcard">
+            <h2 style="text-align:center;">Estate agency</h2>
             <br />
-            <p>Buy, sell, explore. </p>
-            <p>Find your dream house today. </p>
-            <br />
-            <a asp-action="Login"><div class="sel" style="width:60%;">Log in</div></a>
-            <a asp-action="Signup"><div class="sel" style="width:60%;">Sign up</div></a>
+            <form asp-action="Login" method="post" style="width:80%; margin:auto;">
+                Phone
+                <input type="text" placeholder="..." name="phone" />
+                <br />
+                Password
+                <input type="password" name="password" />
+                <br />
+                <button type="submit">Log in</button>
+            </form>
         </div>
     </div>
-    
+
     <footer class="footer transparent-div">
         <div class="container">
             &copy; @DateTime.Today.Year Dmitriy Naumov - naumov1024@@gmail.com
