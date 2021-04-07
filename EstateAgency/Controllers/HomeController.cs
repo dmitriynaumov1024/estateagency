@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EstateAgency.Models;
+using Apache.Ignite.Core;
+using Apache.Ignite.Core.Client;
 
 namespace EstateAgency.Controllers
 {
@@ -36,6 +38,7 @@ namespace EstateAgency.Controllers
         [HttpGet("/Login")]
         public IActionResult LoginGet()
         {
+            ViewData["message"] = Db.Client.GetCache<int, string>("cache").Get(1);
             return View("Login");
         }
 

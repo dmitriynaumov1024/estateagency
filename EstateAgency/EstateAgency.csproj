@@ -4,4 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Apache.Ignite.AspNet">
+      <HintPath>bin\Debug\netcoreapp3.1\Apache.Ignite.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.Ignite.Core">
+      <HintPath>bin\Debug\netcoreapp3.1\Apache.Ignite.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
