@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "H5uD3mXH2TYigUooHeMRRNmdkecp7wmT1TYcMu7x+g/fzNA3SV8wdFcudSBaavmdy4nARtiwKCxedF1fuWTzSg==",
+  "dgSpecHash": "1I1+dWV60ff29jvHux4mh9mzg8da4ooXwVq1+nSMSx3t17mqCORGfnHxxxOBuehIf9jUolm41G1UYiOod3PPBg==",
   "success": true,
   "projectFilePath": "E:\\Proj_1\\estateagency\\EstateAgency\\EstateAgencyConsole\\EstateAgencyConsole.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Dima\\.nuget\\packages\\apache.ignite\\2.10.0\\apache.ignite.2.10.0.nupkg.sha512",
+    "C:\\Users\\Dima\\.nuget\\packages\\system.configuration.configurationmanager\\4.4.0\\system.configuration.configurationmanager.4.4.0.nupkg.sha512",
+    "C:\\Users\\Dima\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.4.0\\system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
+  ],
   "logs": []
 }
