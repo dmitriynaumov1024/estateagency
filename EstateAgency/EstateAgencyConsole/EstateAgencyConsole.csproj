@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Apache.Ignite" Version="2.10.0" />
+    <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Entities\Entities.csproj" />
+    <Reference Include="Apache.Ignite.Core">
+      <HintPath>bin\Debug\netcoreapp3.1\Apache.Ignite.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
