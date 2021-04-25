@@ -43,19 +43,57 @@ namespace Entities
 
     public class Person
     {
+        /// <summary>
+        /// Surname
+        /// </summary>
         public string Surname;
+
+        /// <summary>
+        /// Name
+        /// </summary>
         public string Name;
+
+        /// <summary>
+        /// Phone number. Should consist of numerical characters, starting with '+'.
+        /// </summary>
         public string Phone;
+
+        /// <summary>
+        /// Email address.
+        /// </summary>
         public string Email;
+
+        /// <summary>
+        /// ID of location.
+        /// </summary>
         public int LocationID;
+
+        /// <summary>
+        /// Address. Should consist of street name, home number and optionally flat number.
+        /// </summary>
         public string Address;
+
+        /// <summary>
+        /// Date of registration.
+        /// </summary>
         public DateTime RegDate;
     }
 
     public class Agent
     {
+        /// <summary>
+        /// Total amount of deals.
+        /// </summary>
         public int TotalDeals;
+
+        /// <summary>
+        /// Amount of current month deals.
+        /// </summary>
         public int MonthDeals;
+
+        /// <summary>
+        /// Current month payment in USD.
+        /// </summary>
         public int MonthPayment;
     }
 

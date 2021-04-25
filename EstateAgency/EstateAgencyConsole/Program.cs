@@ -205,9 +205,6 @@ namespace EstateAgencyConsole
 
             try 
             { 
-                client.CreateCache<int, Person>(CacheCfg);
-                // Table/cache deployment goes here.
-                /*
                 client.CreateCache<string, Credential>(CacheCfg);
                 client.CreateCache<int, Person>(CacheCfg);
                 client.CreateCache<int, Agent>(CacheCfg);
@@ -221,7 +218,6 @@ namespace EstateAgencyConsole
                 client.CreateCache<int, Order>(CacheCfg);
                 client.CreateCache<int, ClientWish>(CacheCfg);
                 client.CreateCache<int, Match>(CacheCfg);
-                */
 
                 // Return true if all tables/caches with given configurations are successfully created
                 return true;
@@ -244,6 +240,13 @@ namespace EstateAgencyConsole
         {
             var igniteCfg = new IgniteClientConfiguration
             {
+                BinaryConfiguration = new Apache.Ignite.Core.Binary.BinaryConfiguration
+                {
+                    Serializer = new Apache.Ignite.Core.Binary.BinaryReflectiveSerializer
+                    {
+                        ForceTimestamp = true
+                    }
+                },
                 Endpoints = new[] {"127.0.0.1:10800"}
             };
             return Ignition.StartClient (igniteCfg);
@@ -266,6 +269,7 @@ namespace EstateAgencyConsole
             Console.WriteLine ("Caches:");
             foreach (string i in DbClient.GetCacheNames())
                 Console.WriteLine (i);
+            Console.WriteLine ("-----------------------------------------------------------");
             /*
             Credential c = new Credential
             {
@@ -276,24 +280,83 @@ namespace EstateAgencyConsole
             };
             */
             ICacheClient<int, Person> PersonCache = DbClient.GetCache<int, Person> ("EstateAgency");
-            Person p = new Person
+            ICacheClient<int, EstateObject> EstateObjectCache = DbClient.GetCache<int, EstateObject>("EstateAgency");
+
+            Person[] p = new Person[]
             {
-                Surname = "Ivanov",
-                Name = "Ivan",
-                Phone = "+380962281488",
-                Email = "ivan228@gmail.com",
+                new Person {
+                    Surname = "Ivanov",
+                    Name = "Ivan",
+                    Phone = "+380962281488",
+                    Email = "ivan228@gmail.com",
+                    LocationID = 4,
+                    Address = "West st., 45",
+                    RegDate = DateTime.Today.ToUniversalTime()
+                },
+                new Person {
+                    Surname = "Petrov",
+                    Name = "Petro",
+                    Phone = "+380962281400",
+                    Email = "petrov228@gmail.com",
+                    LocationID = 4,
+                    Address = "West st., 46",
+                    RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
+                },
+                new Person {
+                    Surname = "Petros",
+                    Name = "Petro",
+                    Phone = "+380962281400",
+                    Email = "petrov228@gmail.com",
+                    LocationID = 4,
+                    Address = "West st., 46",
+                    RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
+                }
+            };
+
+            EstateObject obj = new EstateObject
+            {
+                SellerID = 0,
+                PostDate = DateTime.Now.ToUniversalTime(),
+                isOpen = true,
+                isVisible = true,
                 LocationID = 4,
                 Address = "West st., 45",
-                RegDate = DateTime.Today
+                Variant = (byte)'h',
+                Price = 10000,
+                State = 5,
+                Description = "House",
+                Tags = new List<string>(),
+                PhotoUrls = new List<string>()
             };
-            PersonCache.Put(1, p);
-            foreach (var row in PersonCache.Query(new SqlFieldsQuery("select _key, _val from Persons;")))
+
+            for (int i=0; i<p.Length; i++)
+                PersonCache.Put (i+5, p[i]);
+
+            EstateObjectCache.Put (5, obj);
+
+            foreach (var row in PersonCache.Query(new SqlFieldsQuery("select _key, * from Persons;")))
             {
-                Console.WriteLine ("Surname : {0}", (row[1] as Person).Surname);
-                Console.WriteLine ("Name    : {0}", (row[1] as Person).Name);
-                Console.WriteLine ("Phone   : {0}", (row[1] as Person).Phone);
+                Console.WriteLine ("key         : {0}", row[0]);
+                Console.WriteLine ("Surname     : {0}", row[1]);
+                Console.WriteLine ("Name        : {0}", row[2]);
+                Console.WriteLine ("Phone       : {0}", row[3]);
+                Console.WriteLine ("Email       : {0}", row[4]);
+                Console.WriteLine ("LocationID  : {0}", row[5]);
+                Console.WriteLine ("Address     : {0}", row[6]);
+                Console.WriteLine ("RegDate     : {0:yyyy-MM-dd}", ((DateTime)row[7]).ToLocalTime());
                 Console.WriteLine ("-----------------------------------------------------------");
             }
+
+            foreach (var row in EstateObjectCache.Query(new SqlFieldsQuery("select _key, * from EstateObjects;")))
+            {
+                Console.WriteLine ("key         : {0}", row[0]);
+                Console.WriteLine ("SellerID    : {0}", row[1]);
+                Console.WriteLine ("PostDate    : {0}", row[2]);
+                Console.WriteLine ("IsOpen      : {0}", row[3]);
+                Console.WriteLine ("Address     : {0}", row[6]);
+                Console.WriteLine ("-----------------------------------------------------------");
+            }
+
             Console.Read();
             DbClient.Dispose();
         }
