@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Apache.Ignite.Core">
+      <HintPath>bin\Debug\netcoreapp3.1\Apache.Ignite.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

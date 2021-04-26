@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Apache.Ignite;
 using Apache.Ignite.Core;
 using Apache.Ignite.Core.Cache.Query;
 using Apache.Ignite.Core.Client;
 using Apache.Ignite.Core.Client.Cache;
 using Apache.Ignite.Core.Cache.Configuration;
-using Entities;
+using EstateAgency.Entities;
 
 namespace EstateAgencyConsole
 {
@@ -264,7 +263,7 @@ namespace EstateAgencyConsole
             foreach (string i in DbClient.GetCacheNames())
                 DbClient.DestroyCache(i);
             */
-            //CreateDatabase(DbClient);
+            CreateDatabase(DbClient);
 
             Console.WriteLine ("Caches:");
             foreach (string i in DbClient.GetCacheNames())
