@@ -19,7 +19,7 @@ namespace EstateAgency.Entities
     /// Credential. Contains back link to Person, 
     /// information about Password, privilegies and status.
     /// </summary>
-    public class Credential
+    public class Credential: IValidable
     {
         /// <summary>
         /// Back link to Person. Mandatory field. Credential can not exist without a Person.
@@ -47,9 +47,17 @@ namespace EstateAgency.Entities
         /// 'b' - banned.
         /// </summary>
         public byte Status;
+
+        public bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class Person
+    public class Person: IValidable
     {
         /// <summary>
         /// Surname
@@ -85,9 +93,17 @@ namespace EstateAgency.Entities
         /// Date of registration.
         /// </summary>
         [QuerySqlField] public DateTime RegDate;
+
+        public bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class Agent
+    public class Agent: IValidable
     {
         /// <summary>
         /// Total amount of deals.
@@ -103,9 +119,17 @@ namespace EstateAgency.Entities
         /// Current month payment in USD.
         /// </summary>
         [QuerySqlField] public int MonthPayment;
+
+        public bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class Location
+    public class Location: IValidable
     {
         /// <summary>
         /// Name of region.
@@ -121,9 +145,17 @@ namespace EstateAgency.Entities
         /// Name of district, if it is present.
         /// </summary>
         [QuerySqlField] public string District;
+
+        public bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class EstateObject
+    public class EstateObject: IValidable
     {
         /// <summary>
         /// ID of seller.
@@ -188,9 +220,17 @@ namespace EstateAgency.Entities
         /// Collection of photo Urls.
         /// </summary>
         [QuerySqlField] public ICollection<string> PhotoUrls;
+
+        public virtual bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class House
+    public class House: EstateObject, IValidable
     {
         /// <summary>
         /// Land area measured in a (1 a = 100 sq.m)
@@ -211,9 +251,17 @@ namespace EstateAgency.Entities
         /// Room count.
         /// </summary>
         [QuerySqlField] public short RoomCount;
+
+        public override bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class Flat
+    public class Flat: EstateObject, IValidable
     {
         /// <summary>
         /// Home area measured in sq.m.
@@ -229,17 +277,33 @@ namespace EstateAgency.Entities
         /// Count of rooms.
         /// </summary>
         [QuerySqlField] public short RoomCount;
+
+        public override bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class Landplot
+    public class Landplot: EstateObject, IValidable
     {
         /// <summary>
         /// Land area measured in a (1 a = 100 sq.m)
         /// </summary>
         [QuerySqlField] public float LandArea;
+
+        public override bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
-    public class ClientWish
+    public class ClientWish: IValidable
     {
         /// <summary>
         /// ID of client.
@@ -284,6 +348,14 @@ namespace EstateAgency.Entities
         /// Needed state of object. Should be in [0...5] range.
         /// </summary>
         [QuerySqlField] public byte NeededState;
+
+        public bool isValid
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
     public class Bookmark

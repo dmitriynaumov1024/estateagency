@@ -9,6 +9,9 @@ using Apache.Ignite.Core.Cache.Configuration;
 
 namespace EstateAgency.Database
 {
+    /// <summary>
+    /// Static client class for interaction with database.
+    /// </summary>
     public static partial class DbClient
     {
         /// <summary>
