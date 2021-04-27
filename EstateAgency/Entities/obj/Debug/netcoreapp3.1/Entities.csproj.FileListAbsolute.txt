@@ -7,3 +7,5 @@ E:\Proj_1\estateagency\EstateAgency\Entities\obj\Debug\netcoreapp3.1\Entities.As
 E:\Proj_1\estateagency\EstateAgency\Entities\obj\Debug\netcoreapp3.1\Entities.csproj.CoreCompileInputs.cache
 E:\Proj_1\estateagency\EstateAgency\Entities\obj\Debug\netcoreapp3.1\Entities.dll
 E:\Proj_1\estateagency\EstateAgency\Entities\obj\Debug\netcoreapp3.1\Entities.pdb
+E:\Proj_1\estateagency\EstateAgency\Entities\bin\Debug\netcoreapp3.1\Apache.Ignite.Core.xml
+E:\Proj_1\estateagency\EstateAgency\Entities\obj\Debug\netcoreapp3.1\Entities.csproj.CopyComplete

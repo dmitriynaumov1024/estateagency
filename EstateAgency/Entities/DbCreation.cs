@@ -61,7 +61,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration credentialCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "credential",
                 QueryEntities = new[]
                 {
@@ -77,7 +76,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration personCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "person",
                 QueryEntities = new[]
                 {
@@ -93,7 +91,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration agentCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "agent",
                 QueryEntities = new[]
                 {
@@ -109,7 +106,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration estateobjectCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "estateobject",
                 QueryEntities = new[]
                 {
@@ -143,7 +139,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration locationCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "location",
                 QueryEntities = new[]
                 {
@@ -159,7 +154,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration clientwishCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "clientwish",
                 QueryEntities = new[]
                 {
@@ -175,7 +169,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration bookmarkCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "bookmark",
                 QueryEntities = new[]
                 {
@@ -191,7 +184,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration matchCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "match",
                 QueryEntities = new[]
                 {
@@ -207,7 +199,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration orderCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "order",
                 QueryEntities = new[]
                 {
@@ -223,7 +214,6 @@ namespace EstateAgency.Database
             CacheClientConfiguration dealCfg = new CacheClientConfiguration
             {
                 GroupName = "estateagency",
-                DataRegionName = "estateagency",
                 Name = "deal",
                 QueryEntities = new[]
                 {

@@ -7,8 +7,19 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "Entities/1.0.0": {
+        "dependencies": {
+          "Apache.Ignite.Core": "2.10.0.53522"
+        },
         "runtime": {
           "Entities.dll": {}
+        }
+      },
+      "Apache.Ignite.Core/2.10.0.53522": {
+        "runtime": {
+          "Apache.Ignite.Core.dll": {
+            "assemblyVersion": "2.10.0.53522",
+            "fileVersion": "2.10.0.53522"
+          }
         }
       }
     }
@@ -16,6 +27,11 @@
   "libraries": {
     "Entities/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Apache.Ignite.Core/2.10.0.53522": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

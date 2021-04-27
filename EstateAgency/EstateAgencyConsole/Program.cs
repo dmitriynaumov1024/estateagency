@@ -22,6 +22,9 @@ namespace EstateAgencyConsole
             DbClient.Connect();
             DbClient.SetClusterActive(true);
 
+            //DbClient.CreateDatabase();
+            DbClient.GetDatabase();
+
             Console.WriteLine ("Caches:");
             foreach (string i in DbClient.Client.GetCacheNames())
                 Console.WriteLine (i);
@@ -67,6 +70,18 @@ namespace EstateAgencyConsole
                     RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
                 }
             };
+            */
+
+            Person p = new Person
+            {
+                Surname = "Petrov",
+                Name = "Petro",
+                Phone = "+380962281400",
+                Email = "petrov228@gmail.com",
+                LocationID = 4,
+                Address = "West st., 46",
+                RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
+            };
 
             EstateObject obj = new EstateObject
             {
@@ -80,12 +95,14 @@ namespace EstateAgencyConsole
                 Price = 10000,
                 State = 5,
                 Description = "House",
-                Tags = new List<string>(),
-                PhotoUrls = new List<string>()
+                Tags = new[] {"string1", "string2"},
+                PhotoUrls = new[] {"url1", "url2", "url3"}
             };
 
+            DbClient.PersonCache.Put (0, p);
+            DbClient.ObjectCache.Put (0, obj);
 
-            foreach (var row in DbClient.PersonCache.Query(new SqlFieldsQuery("select _key, * from Persons;")))
+            foreach (var row in DbClient.PersonCache.Query(new SqlFieldsQuery("select _key, Surname, Name, Phone, Email, LocationID, Address, RegDate from Persons;")))
             {
                 Console.WriteLine ("key         : {0}", row[0]);
                 Console.WriteLine ("Surname     : {0}", row[1]);
@@ -99,17 +116,19 @@ namespace EstateAgencyConsole
             }
 
             
-            foreach (var row in EstateObjectCache.Query(new SqlFieldsQuery("select _key, * from EstateObjects;")))
+            foreach (var row in DbClient.ObjectCache.Query(new SqlFieldsQuery("select _key, SellerID, PostDate, isOpen, Address from EstateObjects;")))
             {
                 Console.WriteLine ("key         : {0}", row[0]);
                 Console.WriteLine ("SellerID    : {0}", row[1]);
                 Console.WriteLine ("PostDate    : {0}", row[2]);
                 Console.WriteLine ("IsOpen      : {0}", row[3]);
-                Console.WriteLine ("Address     : {0}", row[6]);
+                Console.WriteLine ("Address     : {0}", row[4]);
                 Console.WriteLine ("-----------------------------------------------------------");
             }
-            */
 
+
+
+            Console.WriteLine("[Done. Press ENTER to continue.]");
             Console.Read();
             DbClient.Disconnect();
         }
