@@ -253,8 +253,31 @@ namespace EstateAgency.Database
 
             return true;
         }
-
         
+        /// <summary>
+        /// Retrieve all used caches and assign <b>ICacheClient</b> variables for access to caches.
+        /// </summary>
+        /// <returns>True if all caches were successfully retrieved.</returns>
+        public static bool GetDatabase()
+        {
+            if (client==null) 
+                return false;
+
+            CredentialCache   = client.GetCache <string, Credential> ("credential");
+            PersonCache       = client.GetCache <int, Person>        ("person");
+            AgentCache        = client.GetCache <int, Agent>         ("agent");
+            ObjectCache       = client.GetCache <int, EstateObject>  ("estateobject");
+            HouseCache        = client.GetCache <int, House>         ("house");
+            FlatCache         = client.GetCache <int, Flat>          ("flat");
+            LandplotCache     = client.GetCache <int, Landplot>      ("landplot");
+            ClientWishCache   = client.GetCache <int, ClientWish>    ("clientwish");
+            MatchCache        = client.GetCache <long, Match>        ("match");
+            BookmarkCache     = client.GetCache <long, Bookmark>     ("bookmark");
+            OrderCache        = client.GetCache <long, Order>        ("order");
+            DealCache         = client.GetCache <int, Deal>          ("deal");
+
+            return true;
+        }
 
         /// <summary>
         /// Delete the database of estate agency.

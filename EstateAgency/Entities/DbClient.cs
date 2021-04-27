@@ -10,7 +10,7 @@ using Apache.Ignite.Core.Cache.Configuration;
 namespace EstateAgency.Database
 {
     /// <summary>
-    /// Static client class for interaction with database.
+    /// Static client wrap class for interaction with database.
     /// </summary>
     public static partial class DbClient
     {
@@ -18,6 +18,11 @@ namespace EstateAgency.Database
         /// IIgniteClient for interaction with database.
         /// </summary>
         static IIgniteClient client = null;
+
+        /// <summary>
+        /// Readonly instance of inner IIgniteClient.
+        /// </summary>
+        public static IIgniteClient Client { get => client; }
 
         /// <summary>
         /// Connect to database.
@@ -35,6 +40,17 @@ namespace EstateAgency.Database
         public static void Disconnect()
         {
             client.Dispose();
+        }
+
+        /// <summary>
+        /// Change cruster state.
+        /// </summary>
+        /// <param name="isActive">Parameter to pass to inner 
+        /// function, indicates whether the cluster should be active.
+        /// </param>
+        public static void SetClusterActive(bool isActive)
+        {
+            client.GetCluster().SetActive(isActive);
         }
     }
 }
