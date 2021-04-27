@@ -8,6 +8,8 @@ using Apache.Ignite.Core.Client.Cache;
 using Apache.Ignite.Core.Cache.Configuration;
 using EstateAgency.Entities;
 
+// Please obey single responsibility rule.
+
 namespace EstateAgency.Database
 {
     public static partial class DbClient
@@ -53,6 +55,8 @@ namespace EstateAgency.Database
         {
             if (client==null) 
                 return false;
+
+            // Cache configuration goes here ----------------------------------
 
             CacheClientConfiguration credentialCfg = new CacheClientConfiguration
             {
@@ -204,7 +208,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 DataRegionName = "estateagency",
-                Name = "match",
+                Name = "order",
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -232,8 +236,25 @@ namespace EstateAgency.Database
                 }
             };
 
+            // Cache creation goes here ---------------------------------------
+
+            CredentialCache   = client.CreateCache <string, Credential> (credentialCfg);
+            PersonCache       = client.CreateCache <int, Person> (personCfg);
+            AgentCache        = client.CreateCache <int, Agent> (agentCfg);
+            ObjectCache       = client.CreateCache <int, EstateObject> (estateobjectCfg);
+            HouseCache        = client.GetCache <int, House> ("house");
+            FlatCache         = client.GetCache <int, Flat> ("flat");
+            LandplotCache     = client.GetCache <int, Landplot> ("landplot");
+            ClientWishCache   = client.CreateCache <int, ClientWish> (clientwishCfg);
+            MatchCache        = client.CreateCache <long, Match> (matchCfg);
+            BookmarkCache     = client.CreateCache <long, Bookmark> (bookmarkCfg);
+            OrderCache        = client.CreateCache <long, Order> (orderCfg);
+            DealCache         = client.CreateCache <int, Deal> (dealCfg);
+
             return true;
         }
+
+        
 
         /// <summary>
         /// Delete the database of estate agency.
