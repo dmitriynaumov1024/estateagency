@@ -57,6 +57,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Contains information about person.
+    /// </summary>
     public class Person: IValidable
     {
         /// <summary>
@@ -103,6 +106,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Descriptive entity. Contains information of agent.
+    /// </summary>
     public class Agent: IValidable
     {
         /// <summary>
@@ -129,6 +135,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Contains info about location: region, town/settlement name, district name.
+    /// </summary>
     public class Location: IValidable
     {
         /// <summary>
@@ -155,6 +164,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Base estate object entity. Contains common fields.
+    /// </summary>
     public class EstateObject: IValidable
     {
         /// <summary>
@@ -230,6 +242,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// House inherits basic estate object entity, contains specific information about house.
+    /// </summary>
     public class House: EstateObject, IValidable
     {
         /// <summary>
@@ -261,6 +276,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Inherits basic estate object entity, contains specific information about flat.
+    /// </summary>
     public class Flat: EstateObject, IValidable
     {
         /// <summary>
@@ -287,6 +305,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Inherits basic estate object entity, contains specific information about land plot.
+    /// </summary>
     public class Landplot: EstateObject, IValidable
     {
         /// <summary>
@@ -303,6 +324,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Contains description of client wish.
+    /// </summary>
     public class ClientWish: IValidable
     {
         /// <summary>
@@ -358,6 +382,9 @@ namespace EstateAgency.Entities
         }
     }
 
+    /// <summary>
+    /// Contains information about bookmark.
+    /// </summary>
     public class Bookmark
     {
         /// <summary>
@@ -371,6 +398,9 @@ namespace EstateAgency.Entities
         [QuerySqlField] public int ObjectID;
     }
 
+    /// <summary>
+    /// Contains information about wish-object match.
+    /// </summary>
     public class Match
     {
         /// <summary>
@@ -384,6 +414,9 @@ namespace EstateAgency.Entities
         [QuerySqlField] public int ObjectID;
     }
 
+    /// <summary>
+    /// Contains information about order.
+    /// </summary>
     public class Order
     {
         /// <summary>
@@ -412,6 +445,9 @@ namespace EstateAgency.Entities
         [QuerySqlField] public bool isOpen;
     }
 
+    /// <summary>
+    /// Contains information about deal.
+    /// </summary>
     public class Deal
     {
         /// <summary>

@@ -38,9 +38,9 @@ namespace EstateAgency.Database
         public static ICacheClient<int, House>          HouseCache;
         public static ICacheClient<int, Flat>           FlatCache;
         public static ICacheClient<int, Landplot>       LandplotCache;
-        public static ICacheClient<int, Bookmark>       BookmarkCache;
-        public static ICacheClient<int, Order>          OrderCache;
-        public static ICacheClient<int, Match>          MatchCache;
+        public static ICacheClient<long, Bookmark>      BookmarkCache;
+        public static ICacheClient<long, Order>         OrderCache;
+        public static ICacheClient<long, Match>         MatchCache;
         public static ICacheClient<int, Deal>           DealCache;
 
 
@@ -54,7 +54,183 @@ namespace EstateAgency.Database
             if (client==null) 
                 return false;
 
-            
+            CacheClientConfiguration credentialCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "credential",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Credentials",
+                        KeyType = typeof(string),
+                        ValueType = typeof(Credential)
+                    }
+                }
+            };
+
+            CacheClientConfiguration personCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "person",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Persons",
+                        KeyType = typeof(int),
+                        ValueType = typeof(Person)
+                    }
+                }
+            };
+
+            CacheClientConfiguration agentCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "agent",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Agents",
+                        KeyType = typeof(int),
+                        ValueType = typeof(Agent)
+                    }
+                }
+            };
+
+            CacheClientConfiguration estateobjectCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "estateobject",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "EstateObjects",
+                        KeyType = typeof(int),
+                        ValueType = typeof(EstateObject)
+                    },
+                    new QueryEntity
+                    {
+                        TableName = "Houses",
+                        KeyType = typeof(int),
+                        ValueType = typeof(House)
+                    },
+                    new QueryEntity
+                    {
+                        TableName = "Flats",
+                        KeyType = typeof(int),
+                        ValueType = typeof(Flat)
+                    },
+                    new QueryEntity
+                    {
+                        TableName = "Landplots",
+                        KeyType = typeof(int),
+                        ValueType = typeof(Landplot)
+                    },
+                }
+            };
+
+            CacheClientConfiguration locationCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "location",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Locations",
+                        KeyType = typeof(int),
+                        ValueType = typeof(Location)
+                    }
+                }
+            };
+
+            CacheClientConfiguration clientwishCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "clientwish",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "ClientWishes",
+                        KeyType = typeof(int),
+                        ValueType = typeof(ClientWish)
+                    }
+                }
+            };
+
+            CacheClientConfiguration bookmarkCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "bookmark",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Bookmarks",
+                        KeyType = typeof(long),
+                        ValueType = typeof(Bookmark)
+                    }
+                }
+            };
+
+            CacheClientConfiguration matchCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "match",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Matches",
+                        KeyType = typeof(long),
+                        ValueType = typeof(Match)
+                    }
+                }
+            };
+
+            CacheClientConfiguration orderCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "match",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Orders",
+                        KeyType = typeof(long),
+                        ValueType = typeof(Match)
+                    }
+                }
+            };
+
+            CacheClientConfiguration dealCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                DataRegionName = "estateagency",
+                Name = "deal",
+                QueryEntities = new[]
+                {
+                    new QueryEntity
+                    {
+                        TableName = "Deals",
+                        KeyType = typeof(int),
+                        ValueType = typeof(Deal)
+                    }
+                }
+            };
 
             return true;
         }
