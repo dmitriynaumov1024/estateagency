@@ -71,6 +71,13 @@ namespace EstateAgencyConsole
                 }
             };
             */
+            
+            Location loc = new Location
+            {
+                Region = "Запорізька",
+                Town = "Запоріжжя",
+                District = "Вознесенівський"
+            };
 
             Person p = new Person
             {
@@ -98,10 +105,12 @@ namespace EstateAgencyConsole
                 Tags = new[] {"string1", "string2"},
                 PhotoUrls = new[] {"url1", "url2", "url3"}
             };
+            
+            DbClient.LocationCache.Put (4, loc);
 
-            DbClient.PersonCache.Put (0, p);
+            DbClient.PutPerson (p);
             DbClient.ObjectCache.Put (0, obj);
-
+            
             foreach (var row in DbClient.PersonCache.Query(new SqlFieldsQuery("select _key, Surname, Name, Phone, Email, LocationID, Address, RegDate from Persons;")))
             {
                 Console.WriteLine ("key         : {0}", row[0]);
@@ -114,19 +123,19 @@ namespace EstateAgencyConsole
                 Console.WriteLine ("RegDate     : {0:yyyy-MM-dd}", ((DateTime)row[7]).ToLocalTime());
                 Console.WriteLine ("-----------------------------------------------------------");
             }
-
             
-            foreach (var row in DbClient.ObjectCache.Query(new SqlFieldsQuery("select _key, SellerID, PostDate, isOpen, Address from EstateObjects;")))
+            foreach (var row in DbClient.ObjectCache.Query(new SqlFieldsQuery("select _key, SellerID, PostDate, isOpen, Address, Tags from EstateObjects;")))
             {
                 Console.WriteLine ("key         : {0}", row[0]);
                 Console.WriteLine ("SellerID    : {0}", row[1]);
                 Console.WriteLine ("PostDate    : {0}", row[2]);
                 Console.WriteLine ("IsOpen      : {0}", row[3]);
                 Console.WriteLine ("Address     : {0}", row[4]);
+                Console.WriteLine ("Tags        : ");
+                foreach (string i in (row[5] as string[]))
+                Console.WriteLine ("              "+i);
                 Console.WriteLine ("-----------------------------------------------------------");
             }
-
-
 
             Console.WriteLine("[Done. Press ENTER to continue.]");
             Console.Read();

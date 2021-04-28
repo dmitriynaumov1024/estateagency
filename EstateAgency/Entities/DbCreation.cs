@@ -31,6 +31,17 @@ namespace EstateAgency.Database
             "deal"
         };
 
+        /// <summary>
+        /// Collection of names of caches that use independent integer keys. 
+        /// </summary>
+        public static readonly string[] CacheIndependentIntKeyNames =
+        {
+            "person",
+            "location",
+            "clientwish",
+            "estateobject"
+        };
+
         public static ICacheClient<string, Credential>  CredentialCache;
         public static ICacheClient<int, Person>         PersonCache;
         public static ICacheClient<int, Agent>          AgentCache;
@@ -45,6 +56,7 @@ namespace EstateAgency.Database
         public static ICacheClient<long, Match>         MatchCache;
         public static ICacheClient<int, Deal>           DealCache;
 
+        public static ICacheClient<string, int> LastUsedKeys;
 
         /// <summary>
         /// Create the database of estate agency. 
@@ -62,6 +74,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "credential",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -77,6 +90,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "person",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -92,6 +106,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "agent",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -107,6 +122,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "estateobject",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -140,6 +156,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "location",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -155,6 +172,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "clientwish",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -170,13 +188,19 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "bookmark",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
                     {
                         TableName = "Bookmarks",
                         KeyType = typeof(long),
-                        ValueType = typeof(Bookmark)
+                        ValueType = typeof(Bookmark),
+                        Indexes = new QueryIndex[]
+                        {
+                            new QueryIndex("PersonID"),
+                            new QueryIndex("ObjectID")
+                        }
                     }
                 }
             };
@@ -185,6 +209,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "match",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -200,6 +225,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "order",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -215,6 +241,7 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "deal",
+                AtomicityMode = CacheAtomicityMode.Transactional,
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -226,8 +253,15 @@ namespace EstateAgency.Database
                 }
             };
 
-            // Cache creation goes here ---------------------------------------
+            CacheClientConfiguration lastusedkeyCfg = new CacheClientConfiguration
+            {
+                GroupName = "estateagency",
+                Name = "lastusedkey",
+                AtomicityMode = CacheAtomicityMode.Transactional
+            };
 
+            // Cache creation goes here ---------------------------------------
+            LocationCache     = client.CreateCache <int, Location> (locationCfg);
             CredentialCache   = client.CreateCache <string, Credential> (credentialCfg);
             PersonCache       = client.CreateCache <int, Person> (personCfg);
             AgentCache        = client.CreateCache <int, Agent> (agentCfg);
@@ -241,6 +275,10 @@ namespace EstateAgency.Database
             OrderCache        = client.CreateCache <long, Order> (orderCfg);
             DealCache         = client.CreateCache <int, Deal> (dealCfg);
 
+            LastUsedKeys      = Client.CreateCache <string, int> (lastusedkeyCfg);
+            foreach (string i in CacheIndependentIntKeyNames)
+                LastUsedKeys.Put (i, 0);
+
             return true;
         }
         
@@ -253,6 +291,7 @@ namespace EstateAgency.Database
             if (client==null) 
                 return false;
 
+            LocationCache     = client.GetCache <int, Location>      ("location");
             CredentialCache   = client.GetCache <string, Credential> ("credential");
             PersonCache       = client.GetCache <int, Person>        ("person");
             AgentCache        = client.GetCache <int, Agent>         ("agent");
@@ -265,6 +304,8 @@ namespace EstateAgency.Database
             BookmarkCache     = client.GetCache <long, Bookmark>     ("bookmark");
             OrderCache        = client.GetCache <long, Order>        ("order");
             DealCache         = client.GetCache <int, Deal>          ("deal");
+
+            LastUsedKeys      = client.GetCache <string, int>        ("lastusedkey");
 
             return true;
         }
