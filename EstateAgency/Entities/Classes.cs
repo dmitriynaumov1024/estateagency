@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Apache.Ignite.Core.Cache.Configuration;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Represents a set of Entities of Estate agency.
@@ -44,11 +45,29 @@ namespace EstateAgency.Entities
         /// </summary>
         public byte Status;
 
-        public bool isValid
+        public ValidationResult Validate
         {
             get
             {
-                return true;
+                if (Password == null || Password.Length < 8 || Password.Length > 32) 
+                    return new ValidationResult (
+                        "Password should be from 8 to 32 characters long.", 
+                        "Password"
+                    );
+
+                if (Status!=(byte)'n' && Status!=(byte)'d' && Status!=(byte)'b')
+                    return new ValidationResult (
+                        "Status can be only 'n' - normal, 'd' - deactivated or 'b' - banned.", 
+                        "Status"
+                    );
+
+                if (Privilegies!=(byte)'c' && Privilegies!=(byte)'a' && Privilegies!=(byte)'m' && Privilegies!=(byte)'r')
+                    return new ValidationResult (
+                        "Privilegies can be only 'c' - client, 'a' - agent, 'm' - moderator or 'r' - root.", 
+                        "Credential"
+                    );
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -84,20 +103,124 @@ namespace EstateAgency.Entities
         [QuerySqlField] public int LocationID;
 
         /// <summary>
-        /// Address. Should consist of street name, home number and optionally flat number.
+        /// Name of street.
         /// </summary>
-        [QuerySqlField] public string Address;
+        [QuerySqlField] public string StreetName;
+
+        /// <summary>
+        /// House number. Should contain a decimal number and optionally a letter at the end.
+        /// </summary>
+        [QuerySqlField] public string HouseNumber;
+
+        /// <summary>
+        /// Flat number.
+        /// </summary>
+        [QuerySqlField] public short FlatNumber;
 
         /// <summary>
         /// Date of registration.
         /// </summary>
         [QuerySqlField] public DateTime RegDate;
 
-        public bool isValid
+        public ValidationResult Validate
         {
             get
             {
-                return true;
+                if(Surname == null || Surname.Length < 2 || Surname.Length > 64)
+                    return new ValidationResult (
+                        "Surname must have from 2 to 64 letters.", 
+                        "Surname"
+                    );
+
+                if(Name == null || Name.Length < 2 || Name.Length > 64)
+                    return new ValidationResult (
+                        "Name must have from 2 to 64 letters.", 
+                        "Name"
+                    );
+
+                if(Phone == null || Phone.Length < 10 || Phone.Length > 16)
+                    return new ValidationResult (
+                        "Phone number must be from 10 to 16 digits long.", 
+                        "Phone"
+                    );
+
+                foreach (char i in Surname)
+                {
+                    if (!(char.IsLetter(i) || i=='-' || i==' '))
+                        return new ValidationResult (
+                            "Surname can only consist of alphabetic letters or dash.", 
+                            "Surname"
+                        );
+                }
+
+                foreach (char i in Name)
+                {
+                    if (!(char.IsLetter(i) || i=='-' || i==' '))
+                        return new ValidationResult (
+                            "Name can only consist of alphabetic letters or dash.", 
+                            "Name"
+                        );
+                }
+
+                for (int i=0; i<Phone.Length; i++)
+                {
+                    if (Phone[i]=='+' && i==0) continue;
+                    if (!(char.IsDigit(Phone[i]))) 
+                        return new ValidationResult (
+                            "Phone must consist only of digits or '+' at the begin.", 
+                            "Phone"
+                        );
+                }
+                
+                if (Email == null || Email.Length<8 || Email.Length>64) 
+                    return new ValidationResult (
+                        "Email must be from 8 to 64 characters long.", 
+                        "Email"
+                    );
+
+                string mch = Regex.Match(Email, @"\b[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]{0,61}[a-zA-Z0-9]\.[a-zA-Z.]{2,6}\b").Value;
+                if (mch != Email)
+                    return new ValidationResult (
+                        $"Regex: {mch} - Email must consist only of latin alphabetic letters, digits, '@' symbol, dot or dash. If your email is real and doesn't correspond to this criteria, we are sorry.",
+                        "Email"
+                    );
+
+                if (StreetName == null)
+                    return new ValidationResult (
+                        "Street name must not be empty.",
+                        "StreetName"
+                    );
+
+                foreach (char i in StreetName)
+                {
+                    if (!(char.IsLetter(i) || char.IsDigit(i) || i=='.' || i=='-' || i==' '))
+                        return new ValidationResult (
+                            "Street name must contain only alphabetic letters, digits, dot or dash.",
+                            "Email"
+                        );
+                }
+
+                if (HouseNumber.Length==0 || HouseNumber.Length>5 || HouseNumber[0]=='0' || 
+                    ((HouseNumber.Length - Regex.Match(HouseNumber, "\\d+").Value.Length) > 1) || 
+                    (Regex.Match(HouseNumber, "\\d+").Index!=0))
+                    return new ValidationResult (
+                        "Invalid house number.",
+                        "HouseNumber"
+                    );
+
+                if (FlatNumber > 1000) 
+                    return new ValidationResult (
+                        "Invalid flat number.",
+                        "FlatNumber"
+                    );
+
+                if(RegDate > DateTime.UtcNow)
+                    return new ValidationResult (
+                        "Signup date can not be after current date and time.",
+                        "RegDate"
+                    );
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -110,23 +233,24 @@ namespace EstateAgency.Entities
         /// <summary>
         /// Total amount of deals.
         /// </summary>
-        [QuerySqlField] public int TotalDeals;
+        [QuerySqlField] public short TotalDeals;
 
         /// <summary>
         /// Amount of current month deals.
         /// </summary>
-        [QuerySqlField] public int MonthDeals;
+        [QuerySqlField] public short MonthDeals;
 
         /// <summary>
         /// Current month payment in USD.
         /// </summary>
         [QuerySqlField] public int MonthPayment;
 
-        public bool isValid
+        public ValidationResult Validate
         {
             get
             {
-                return true;
+                if (TotalDeals < 0 || MonthDeals < 0 || MonthPayment < 0 || TotalDeals < MonthDeals) return ValidationResult.Fail; 
+                return ValidationResult.Success;
             }
         }
     }
@@ -151,11 +275,29 @@ namespace EstateAgency.Entities
         /// </summary>
         [QuerySqlField] public string District;
 
-        public bool isValid
+        public ValidationResult Validate
         {
             get
             {
-                return true;
+                if (Region == null || Region.Length < 5 || Region.Length > 30) 
+                    return new ValidationResult(
+                        "Region name length should be from 5 to 30 characters.",
+                        "Region"
+                    );
+
+                if (Town == null || Town.Length < 2 || Town.Length > 30) 
+                    return new ValidationResult(
+                        "Town name length should be from 2 to 30 characters.",
+                        "Region"
+                    );
+
+                if (District!=null && (District.Length > 30) || District.Length < 2)
+                    return new ValidationResult(
+                        "District name length should be from 2 to 30 characters.",
+                        "Region"
+                    );
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -191,9 +333,14 @@ namespace EstateAgency.Entities
         [QuerySqlField] public int LocationID;
 
         /// <summary>
-        /// Address of object. Should include street name, home number and flat number, if available.
+        /// Name of street.
         /// </summary>
-        [QuerySqlField] public string Address;
+        [QuerySqlField] public string StreetName;
+
+        /// <summary>
+        /// House number. Should contain a decimal number and optionally a letter at the end.
+        /// </summary>
+        [QuerySqlField] public string HouseNumber;
 
         /// <summary>
         /// Variant. Possible values: <br/>
@@ -229,11 +376,64 @@ namespace EstateAgency.Entities
         /// </summary>
         [QuerySqlField] public ICollection<string> PhotoUrls;
 
-        public virtual bool isValid
+        public virtual ValidationResult Validate
         {
             get
             {
-                return true;
+                if (StreetName == null)
+                    return new ValidationResult (
+                        "Street name must not be empty.",
+                        "StreetName"
+                    );
+
+                foreach (char i in StreetName)
+                {
+                    if (!(char.IsLetter(i) || char.IsDigit(i) || i=='.' || i=='-' || i==' '))
+                        return new ValidationResult (
+                            "Street name must contain only alphabetic letters, digits, dot or dash.",
+                            "Email"
+                        );
+                }
+
+                if (HouseNumber.Length==0 || HouseNumber.Length>5 || HouseNumber[0]=='0' || 
+                    ((HouseNumber.Length - Regex.Match(HouseNumber, "\\d+").Value.Length) > 1) || 
+                    (Regex.Match(HouseNumber, "\\d+").Index!=0))
+                    return new ValidationResult (
+                        "Invalid house number.",
+                        "HouseNumber"
+                    );
+
+                if (Variant!=(byte)'o') 
+                    return new ValidationResult (
+                        "Variant of basic Estate object can only be 'o' - other.",
+                        "Variant"
+                    );
+
+                if (State < 0 || State > 5)
+                    return new ValidationResult (
+                        "State can be only from 0 to 5.",
+                        "State"
+                    );
+
+                if (Description == null || Description.Length > 2000 || Description.Length < 10)
+                    return new ValidationResult (
+                        "Description of object must be from 10 to 2000 characters long.",
+                        "Description"
+                    );
+
+                if (Tags!=null && Tags.Count > 20) 
+                    return new ValidationResult (
+                        "Only 20 tags are allowed.",
+                        "Tags"
+                    );
+
+                if (PhotoUrls == null || PhotoUrls.Count < 1 || PhotoUrls.Count > 10)
+                    return new ValidationResult (
+                        "You should provide from 1 to 10 photos.",
+                        "PhotoUrls"
+                    );
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -263,11 +463,29 @@ namespace EstateAgency.Entities
         /// </summary>
         [QuerySqlField] public short RoomCount;
 
-        public override bool isValid
+        public override ValidationResult Validate
         {
             get
             {
-                return true;
+                var v = base.Validate;
+                if (!(v.isValid)) return v;
+
+                if (Variant!='h') 
+                    return new ValidationResult ("Variant must be 'h' for a house.", "Variant");
+
+                if (LandArea < 1 || LandArea > 1000F)
+                    return new ValidationResult ("Land area must be in [1..1000] range.", "LandArea");
+
+                if (HomeArea < 1 || HomeArea > 40000F)
+                    return new ValidationResult ("Home area must be in [1..40000] range.", "HomeArea");
+
+                if (FloorCount < 1 || FloorCount > 10)
+                    return new ValidationResult ("Floor count must be in [1..10] range.", "FloorCount");
+
+                if (RoomCount < 1 || RoomCount > 100) 
+                    return new ValidationResult ("Room count must be in [1..100] range.", "RoomCount");
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -292,11 +510,34 @@ namespace EstateAgency.Entities
         /// </summary>
         [QuerySqlField] public short RoomCount;
 
-        public override bool isValid
+        /// <summary>
+        /// Flat number.
+        /// </summary>
+        [QuerySqlField] public short FlatNumber;
+
+        public override ValidationResult Validate
         {
             get
             {
-                return true;
+                var v = base.Validate;
+                if (!(v.isValid)) return v;
+
+                if (Variant!='f') 
+                    return new ValidationResult ("Variant must be 'f' for a flat.", "Variant");
+
+                if (HomeArea < 1 || HomeArea > 400F)
+                    return new ValidationResult ("Home area must be in [1..40000] range.", "HomeArea");
+
+                if (Floor < 0 || Floor > 100)
+                    return new ValidationResult ("Floor number must be in [1..100] range.", "FloorCount");
+
+                if (RoomCount < 1 || RoomCount > 10) 
+                    return new ValidationResult ("Room count must be in [1..10] range.", "RoomCount");
+
+                if (FlatNumber < 1 || FlatNumber > 1000)
+                    return new ValidationResult ("Flat number must be in [1.1000] range.", "FlatNumber");
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -311,11 +552,20 @@ namespace EstateAgency.Entities
         /// </summary>
         [QuerySqlField] public float LandArea;
 
-        public override bool isValid
+        public override ValidationResult Validate
         {
             get
             {
-                return true;
+                var v = base.Validate;
+                if (!(v.isValid)) return v;
+
+                if (Variant!='l') 
+                    return new ValidationResult ("Variant must be 'l' for landplot.", "Variant");
+
+                if (LandArea < 1 || LandArea > 1000F)
+                    return new ValidationResult ("Land area must be in [1..1000] range.", "LandArea");
+
+                return ValidationResult.Success;
             }
         }
     }
@@ -369,11 +619,26 @@ namespace EstateAgency.Entities
         /// </summary>
         [QuerySqlField] public byte NeededState;
 
-        public bool isValid
+        public ValidationResult Validate
         {
             get
             {
-                return true;
+                if (PostDate > DateTime.UtcNow) 
+                    return new ValidationResult ("Post date must not be after now.", "PostDate");
+
+                if (!(Variant==(byte)'o' || Variant==(byte)'h' || Variant==(byte)'f' || Variant==(byte)'l'))
+                    return new ValidationResult ("Variant can be only 'o' - other, 'h' - house, 'f' - flat or 'l' - landplot.", "Variant");
+
+                if (Price < 1) 
+                    return new ValidationResult ("Price must be greater than 0.", "Price");
+                
+                if (Tags!=null && Tags.Count > 20)
+                    return new ValidationResult ("No more than 20 tags are allowed.", "Tags");
+
+                if (NeededState < 0 || NeededState > 5)
+                    return new ValidationResult ("Needed state must be from 0 to 5.", "Needed state");
+
+                return ValidationResult.Success;
             }
         }
     }

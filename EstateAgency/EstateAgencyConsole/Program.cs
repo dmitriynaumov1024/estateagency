@@ -17,6 +17,33 @@ namespace EstateAgencyConsole
         /// Main entry point for application. The main task 
         /// of the program is to create database of Estate agency.
         /// </summary>
+        static void Main()
+        {
+            Person p = new Person
+            {
+                Surname = "Іванов-Донцев",
+                Name = "Іван Іванович",
+                Phone = "09822899148",
+                Email = "ivanov228@gmail.com",
+                StreetName = "вулиця Героїв 93-ї бригади",
+                HouseNumber = "1f",
+                FlatNumber = 3,
+                RegDate = DateTime.Parse("2021-04-20").ToUniversalTime()
+            };
+
+            ValidationResult vr = p.Validate;
+            if (vr.isValid)
+            {
+                Console.WriteLine ("Success!");
+            } 
+            else
+            {
+                Console.WriteLine (vr.Message);
+                Console.WriteLine (vr.FieldName);
+            }
+        }
+
+        /*
         static void Main ()
         {
             DbClient.Connect();
@@ -30,7 +57,7 @@ namespace EstateAgencyConsole
                 Console.WriteLine (i);
             Console.WriteLine ("-----------------------------------------------------------");
 
-            /*
+            
             Credential c = new Credential
             {
                 PersonID = 100,
@@ -70,7 +97,7 @@ namespace EstateAgencyConsole
                     RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
                 }
             };
-            */
+            
             
             Location loc = new Location
             {
@@ -141,5 +168,6 @@ namespace EstateAgencyConsole
             Console.Read();
             DbClient.Disconnect();
         }
+        */
     }
 }

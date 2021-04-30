@@ -15,7 +15,7 @@ namespace EstateAgency.Entities
         /// <summary>
         /// Check whether fields of the instance correspond to domain, using predefined criterias.
         /// </summary>
-        public bool isValid { get; }
+        public ValidationResult Validate { get; }
     }
 
     /// <summary>
@@ -25,5 +25,55 @@ namespace EstateAgency.Entities
     {
         public string ObjectTypeName;
         public string FieldName;
+        public ValidationException (string message): base(message) { }
+        public ValidationException (string message, string objectTypeName, string fieldName): 
+            base(message) 
+        { 
+            this.ObjectTypeName = objectTypeName;
+            this.FieldName = fieldName;
+        }
+    }
+
+    /// <summary>
+    /// Validation result. Useful to provide information about field invalidity.
+    /// </summary>
+    public class ValidationResult
+    {
+        public string ObjectTypeName;
+        public string FieldName;
+        public string Message;
+        public bool isValid;
+
+        /// <summary>
+        /// Successful validation result.
+        /// </summary>
+        public static readonly ValidationResult Success = new ValidationResult
+        {
+            isValid = true,
+            ObjectTypeName = "unknown",
+            FieldName = "unknown",
+            Message = "Succesful validation"
+        };
+
+        /// <summary>
+        /// Simple failed validation result.
+        /// </summary>
+        public static readonly ValidationResult Fail = new ValidationResult
+        {
+            isValid = false,
+            ObjectTypeName = "unknown",
+            FieldName = "unknown",
+            Message = "Validation failed"
+        };
+
+        public ValidationResult () { }
+
+        public ValidationResult (string message, string fieldName="unknown", string objectTypeName="unknown")
+        {
+            this.Message = message;
+            this.FieldName = fieldName;
+            this.ObjectTypeName = objectTypeName;
+            this.isValid = false;
+        }
     }
 }
