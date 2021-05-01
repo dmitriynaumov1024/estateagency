@@ -28,7 +28,8 @@ namespace EstateAgency.Database
             "bookmark",
             "order",
             "match",
-            "deal"
+            "deal",
+            "lastusedkey"
         };
 
         /// <summary>
@@ -74,7 +75,8 @@ namespace EstateAgency.Database
             {
                 GroupName = "estateagency",
                 Name = "credential",
-                AtomicityMode = CacheAtomicityMode.Transactional,
+                AtomicityMode = CacheAtomicityMode.Transactional
+                /*
                 QueryEntities = new[]
                 {
                     new QueryEntity
@@ -84,6 +86,7 @@ namespace EstateAgency.Database
                         ValueType = typeof(Credential)
                     }
                 }
+                */
             };
 
             CacheClientConfiguration personCfg = new CacheClientConfiguration
@@ -266,9 +269,9 @@ namespace EstateAgency.Database
             PersonCache       = client.CreateCache <int, Person> (personCfg);
             AgentCache        = client.CreateCache <int, Agent> (agentCfg);
             ObjectCache       = client.CreateCache <int, EstateObject> (estateobjectCfg);
-            HouseCache        = client.GetCache <int, House> ("house");
-            FlatCache         = client.GetCache <int, Flat> ("flat");
-            LandplotCache     = client.GetCache <int, Landplot> ("landplot");
+            HouseCache        = client.GetCache <int, House> ("estateobject");
+            FlatCache         = client.GetCache <int, Flat> ("estateobject");
+            LandplotCache     = client.GetCache <int, Landplot> ("estateobject");
             ClientWishCache   = client.CreateCache <int, ClientWish> (clientwishCfg);
             MatchCache        = client.CreateCache <long, Match> (matchCfg);
             BookmarkCache     = client.CreateCache <long, Bookmark> (bookmarkCfg);
@@ -296,9 +299,9 @@ namespace EstateAgency.Database
             PersonCache       = client.GetCache <int, Person>        ("person");
             AgentCache        = client.GetCache <int, Agent>         ("agent");
             ObjectCache       = client.GetCache <int, EstateObject>  ("estateobject");
-            HouseCache        = client.GetCache <int, House>         ("house");
-            FlatCache         = client.GetCache <int, Flat>          ("flat");
-            LandplotCache     = client.GetCache <int, Landplot>      ("landplot");
+            HouseCache        = client.GetCache <int, House>         ("estateobject");
+            FlatCache         = client.GetCache <int, Flat>          ("estateobject");
+            LandplotCache     = client.GetCache <int, Landplot>      ("estateobject");
             ClientWishCache   = client.GetCache <int, ClientWish>    ("clientwish");
             MatchCache        = client.GetCache <long, Match>        ("match");
             BookmarkCache     = client.GetCache <long, Bookmark>     ("bookmark");
@@ -320,8 +323,16 @@ namespace EstateAgency.Database
             if (client==null) 
                 return false;
 
-            foreach (string i in CacheNames)
-                client.DestroyCache (i);
+            foreach (string i in CacheNames) 
+            {
+                try { 
+                    client.DestroyCache (i);
+                }
+                catch (Exception ee)
+                {
+                    Console.WriteLine ($"Cache with name {i} does not exist.");
+                }
+            }
 
             return true;
         }

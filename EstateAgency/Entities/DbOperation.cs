@@ -192,12 +192,258 @@ namespace EstateAgency.Database
                     default: 
                     break;
                 }
-                key++;
-                LastUsedKeys.Put("estateobject", key);
+                LastUsedKeys.Put("estateobject", key+1);
                 tx.Commit();
             }
         }
 
+        /// <summary>
+        /// Put ClientWish entity into the cache. <br/>
+        /// Referential integrity check is done on: <br/>
+        /// ClientWish.ClientID - Person.key <br/>
+        /// ClientWish.LocationID - Location.key 
+        /// </summary>
+        /// <param name="value">ClientWish to put into the cache.</param>
+        public static void PutClientWish (ClientWish value)
+        {
+            using (var tx = Client.GetTransactions().TxStart())
+            {
+                // Error if Person with key = value.ClientID is not found.
+                if (!(PersonCache.ContainsKey(value.ClientID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into ClientWish cache.")
+                    {
+                        Operation = "put",
+                        TableName = "ClientWish",
+                        FieldName = "ClientID",
+                        ReadableMessage = $"Can not put new entry into ClientWish cache because Person with key {value.ClientID} does not exist."
+                    };
+                }
 
+                // Error if Location not found.
+                if (!(LocationCache.ContainsKey(value.LocationID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into ClientWish cache.")
+                    {
+                        Operation = "put",
+                        TableName = "ClientWish",
+                        FieldName = "LocationID",
+                        ReadableMessage = $"Can not put new entry into ClientWish cache because Location with key {value.LocationID} does not exist."
+                    };
+                }
+
+                // Normal operation.
+                int key = LastUsedKeys.Get ("clientwish");
+                ClientWishCache.Put (key, value);
+                LastUsedKeys.Put ("clientwish", key+1);
+                tx.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Put bookmark entity into the cache. <br/>
+        /// Referential integrity check is done on: <br/>
+        /// Bookmark.PersonID - Person.key <br/>
+        /// Bookmark.ObjectID - Object.key <br/>
+        /// </summary>
+        /// <param name="value">Bookmark to put into the cache.</param>
+        public static void PutBookmark (Bookmark value)
+        {
+            using (var tx = Client.GetTransactions().TxStart())
+            {
+                // Error if Person with key = value.ClientID is not found.
+                if (!(PersonCache.ContainsKey(value.PersonID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Bookmark cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Bookmark",
+                        FieldName = "PersonID",
+                        ReadableMessage = $"Can not put new entry into Bookmark cache because Person with key {value.PersonID} does not exist."
+                    };
+                }
+
+                // Error if EstateObject with key = value.ObjectID is not found.
+                if (!(ObjectCache.ContainsKey(value.ObjectID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Bookmark cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Bookmark",
+                        FieldName = "ObjectID",
+                        ReadableMessage = $"Can not put new entry into Bookmark cache because EstateObject with key {value.ObjectID} does not exist."
+                    };
+                }
+
+                // Normal operation
+                long key = ((long)value.PersonID)<<32 + value.ObjectID;
+                BookmarkCache.Put (key, value);
+                tx.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Put match entity into the cache. <br/>
+        /// Referential integrity check is done on: <br/>
+        /// Match.WishID - ClientWish.key <br/>
+        /// Match.ObjectID - Object.key <br/>
+        /// </summary>
+        /// <param name="value">Match to put into the cache.</param>
+        public static void PutMatch (Match value)
+        {
+            using (var tx = Client.GetTransactions().TxStart())
+            {
+                // Error if ClientWish with key = value.WishID is not found.
+                if (!(ClientWishCache.ContainsKey(value.WishID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Bookmark cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Match",
+                        FieldName = "WishID",
+                        ReadableMessage = $"Can not put new entry into Match cache because ClientWish with key {value.WishID} does not exist."
+                    };
+                }
+
+                // Error if EstateObject with key = value.ObjectID is not found.
+                if (!(ObjectCache.ContainsKey(value.ObjectID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Bookmark cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Match",
+                        FieldName = "ObjectID",
+                        ReadableMessage = $"Can not put new entry into Match cache because EstateObject with key {value.ObjectID} does not exist."
+                    };
+                }
+                
+                // Normal operation
+                long key = ((long)value.WishID)<<32 + value.ObjectID;
+                MatchCache.Put (key, value);
+                tx.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Put Order entity into the cache. <br/>
+        /// NOTE: usually order is put with empty AgentID. <br/>
+        /// Referential integrity check is done on: <br/>
+        /// Order.ClientID - Person.key <br/>
+        /// Order.ObjectID - EstateObject.key
+        /// </summary>
+        /// <param name="value"></param>
+        public static void PutOrder (Order value)
+        {
+            using (var tx = Client.GetTransactions().TxStart())
+            {
+                // Error if Person with key = value.ClientID is not found.
+                if (!(PersonCache.ContainsKey(value.ClientID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Order cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Order",
+                        FieldName = "ClientID",
+                        ReadableMessage = $"Can not put new entry into Order cache because Person with key {value.ClientID} does not exist."
+                    };
+                }
+
+                // Error if EstateObject with key = value.ObjectID is not found.
+                if (!(ObjectCache.ContainsKey(value.ObjectID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Order cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Order",
+                        FieldName = "ObjectID",
+                        ReadableMessage = $"Can not put new entry into Order cache because EstateObject with key {value.ObjectID} does not exist."
+                    };
+                }
+
+                // Normal operation
+                long key = ((long)value.ClientID)<<32 + value.ObjectID;
+                OrderCache.Put (key, value);
+                tx.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Put deal entity into the cache. <br/>
+        /// Referential integrity is checked on: <br/>
+        /// Deal.key - EstateObject.key <br/>
+        /// Deal.BuyerID - Person.key <br/>
+        /// Deal.SellerID - Person.key <br/>
+        /// Deal.AgentID - Agent.key <br/>
+        /// </summary>
+        /// <param name="value">Deal to put into the cache.</param>
+        public static void PutDeal (int key, Deal value)
+        {
+            using (var tx = Client.GetTransactions().TxStart())
+            {
+                // Error if EstateObject with mentioned key is not found.
+                if (!(ObjectCache.ContainsKey(key)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Deal cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Deal",
+                        FieldName = "key",
+                        ReadableMessage = $"Can not put new entry into Deal cache because EstateObject with key {key} does not exist."
+                    };
+                }
+
+                // Error if Person with key = value.BuyerID is not found.
+                if (!(PersonCache.ContainsKey(value.BuyerID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Deal cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Deal",
+                        FieldName = "BuyerID",
+                        ReadableMessage = $"Can not put new entry into Deal cache because Person with key {value.BuyerID} does not exist."
+                    };
+                }
+
+                // Error if Person with key = value.SellerID is not found.
+                if (!(PersonCache.ContainsKey(value.SellerID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Deal cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Deal",
+                        FieldName = "SellerID",
+                        ReadableMessage = $"Can not put new entry into Deal cache because Person with key {value.SellerID} does not exist."
+                    };
+                }
+
+                // Error if Agent with key = value.AgentID is not found.
+                if (!(AgentCache.ContainsKey(value.AgentID)))
+                {
+                    tx.Commit();
+                    throw new ReferentialException ("Can not put new entry into Deal cache.")
+                    {
+                        Operation = "put",
+                        TableName = "Deal",
+                        FieldName = "AgentID",
+                        ReadableMessage = $"Can not put new entry into Deal cache because Agent with key {value.AgentID} does not exist."
+                    };
+                }
+
+                // Normal operation
+                DealCache.Put (key, value);
+                tx.Commit();
+            }
+        }
     }
 }

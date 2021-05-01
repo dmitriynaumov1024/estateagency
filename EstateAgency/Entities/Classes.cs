@@ -468,7 +468,7 @@ namespace EstateAgency.Entities
             get
             {
                 var v = base.Validate;
-                if (!(v.isValid)) return v;
+                if (!(v.isValid) && v.FieldName!="Variant") return v;
 
                 if (Variant!='h') 
                     return new ValidationResult ("Variant must be 'h' for a house.", "Variant");
@@ -520,7 +520,7 @@ namespace EstateAgency.Entities
             get
             {
                 var v = base.Validate;
-                if (!(v.isValid)) return v;
+                if (!(v.isValid) && v.FieldName!="Variant") return v;
 
                 if (Variant!='f') 
                     return new ValidationResult ("Variant must be 'f' for a flat.", "Variant");
@@ -557,7 +557,7 @@ namespace EstateAgency.Entities
             get
             {
                 var v = base.Validate;
-                if (!(v.isValid)) return v;
+                if (!(v.isValid) && v.FieldName!="Variant") return v;
 
                 if (Variant!='l') 
                     return new ValidationResult ("Variant must be 'l' for landplot.", "Variant");

@@ -17,40 +17,15 @@ namespace EstateAgencyConsole
         /// Main entry point for application. The main task 
         /// of the program is to create database of Estate agency.
         /// </summary>
-        static void Main()
-        {
-            Person p = new Person
-            {
-                Surname = "Іванов-Донцев",
-                Name = "Іван Іванович",
-                Phone = "09822899148",
-                Email = "ivanov228@gmail.com",
-                StreetName = "вулиця Героїв 93-ї бригади",
-                HouseNumber = "1f",
-                FlatNumber = 3,
-                RegDate = DateTime.Parse("2021-04-20").ToUniversalTime()
-            };
 
-            ValidationResult vr = p.Validate;
-            if (vr.isValid)
-            {
-                Console.WriteLine ("Success!");
-            } 
-            else
-            {
-                Console.WriteLine (vr.Message);
-                Console.WriteLine (vr.FieldName);
-            }
-        }
-
-        /*
         static void Main ()
         {
             DbClient.Connect();
             DbClient.SetClusterActive(true);
 
-            //DbClient.CreateDatabase();
-            DbClient.GetDatabase();
+            DbClient.DeleteDatabase();
+            DbClient.CreateDatabase();
+            //DbClient.GetDatabase();
 
             Console.WriteLine ("Caches:");
             foreach (string i in DbClient.Client.GetCacheNames())
@@ -60,44 +35,11 @@ namespace EstateAgencyConsole
             
             Credential c = new Credential
             {
-                PersonID = 100,
+                PersonID = 0,
                 Password = "Ag7a0grspaz45!a",
-                Privilegies = 'c',
-                Status = 'n'
+                Privilegies = (byte)'c',
+                Status = (byte)'n'
             };
-            
-
-            Person[] p = new Person[]
-            {
-                new Person {
-                    Surname = "Ivanov",
-                    Name = "Ivan",
-                    Phone = "+380962281488",
-                    Email = "ivan228@gmail.com",
-                    LocationID = 4,
-                    Address = "West st., 45",
-                    RegDate = DateTime.Today.ToUniversalTime()
-                },
-                new Person {
-                    Surname = "Petrov",
-                    Name = "Petro",
-                    Phone = "+380962281400",
-                    Email = "petrov228@gmail.com",
-                    LocationID = 4,
-                    Address = "West st., 46",
-                    RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
-                },
-                new Person {
-                    Surname = "Petros",
-                    Name = "Petro",
-                    Phone = "+380962281400",
-                    Email = "petrov228@gmail.com",
-                    LocationID = 4,
-                    Address = "West st., 46",
-                    RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
-                }
-            };
-            
             
             Location loc = new Location
             {
@@ -113,32 +55,50 @@ namespace EstateAgencyConsole
                 Phone = "+380962281400",
                 Email = "petrov228@gmail.com",
                 LocationID = 4,
-                Address = "West st., 46",
+                StreetName = "вулиця Героїв 93 бригади",
+                HouseNumber = "14",
+                FlatNumber = 12,
                 RegDate = (DateTime.Parse("2021-04-20")).ToUniversalTime()
             };
-
-            EstateObject obj = new EstateObject
+            
+            EstateObject obj = new House
             {
                 SellerID = 0,
-                PostDate = DateTime.Now.ToUniversalTime(),
+                PostDate = (DateTime.Parse("2021-04-20 18:05:00")).ToUniversalTime(),
                 isOpen = true,
                 isVisible = true,
                 LocationID = 4,
-                Address = "West st., 45",
+                StreetName = "вулиця Барикадна",
+                HouseNumber = "45а",
                 Variant = (byte)'h',
-                Price = 10000,
+                Price = 23000,
                 State = 5,
-                Description = "House",
-                Tags = new[] {"string1", "string2"},
-                PhotoUrls = new[] {"url1", "url2", "url3"}
+                Description = "Hello hello hell to world... na na na na na na no.",
+                Tags = new[] {"ele", "wat", "gas"},
+                PhotoUrls = new[] {"photo1.jpg", "photo2.jpg"},
+                LandArea = 12,
+                HomeArea = 89,
+                FloorCount = 1,
+                RoomCount = 5
             };
-            
+
             DbClient.LocationCache.Put (4, loc);
 
             DbClient.PutPerson (p);
-            DbClient.ObjectCache.Put (0, obj);
+            DbClient.PutCredential (c);
             
-            foreach (var row in DbClient.PersonCache.Query(new SqlFieldsQuery("select _key, Surname, Name, Phone, Email, LocationID, Address, RegDate from Persons;")))
+            var v = obj.Validate;
+            if (v.isValid)
+            {
+                Console.WriteLine ("Succesful validation.");
+                DbClient.PutEstateObject(obj);
+            }
+            else
+            {
+                Console.WriteLine ("Validation failed: " + v.Message);
+            }
+
+            foreach (var row in DbClient.PersonCache.Query(new SqlFieldsQuery("select _key, Surname, Name, Phone, Email, LocationID, concat (StreetName, ' ', HouseNumber, ' ', FlatNumber) as Address, RegDate from Persons;")))
             {
                 Console.WriteLine ("key         : {0}", row[0]);
                 Console.WriteLine ("Surname     : {0}", row[1]);
@@ -150,16 +110,19 @@ namespace EstateAgencyConsole
                 Console.WriteLine ("RegDate     : {0:yyyy-MM-dd}", ((DateTime)row[7]).ToLocalTime());
                 Console.WriteLine ("-----------------------------------------------------------");
             }
-            
-            foreach (var row in DbClient.ObjectCache.Query(new SqlFieldsQuery("select _key, SellerID, PostDate, isOpen, Address, Tags from EstateObjects;")))
+            Console.WriteLine($"EstateObject cache contains Key: {DbClient.ObjectCache.ContainsKey(0)}");
+            House hh = (House) DbClient.ObjectCache.Get(0);
+            Console.WriteLine ((char)hh.Variant);
+            Console.WriteLine (hh.RoomCount);
+            Console.WriteLine ("-----------------------------------------------------------");
+            foreach (var row in DbClient.ObjectCache.Query(new SqlFieldsQuery("select _key, SellerID, PostDate, isOpen, Tags from Houses;")))
             {
                 Console.WriteLine ("key         : {0}", row[0]);
                 Console.WriteLine ("SellerID    : {0}", row[1]);
                 Console.WriteLine ("PostDate    : {0}", row[2]);
                 Console.WriteLine ("IsOpen      : {0}", row[3]);
-                Console.WriteLine ("Address     : {0}", row[4]);
                 Console.WriteLine ("Tags        : ");
-                foreach (string i in (row[5] as string[]))
+                foreach (string i in (row[4] as string[]))
                 Console.WriteLine ("              "+i);
                 Console.WriteLine ("-----------------------------------------------------------");
             }
@@ -168,6 +131,5 @@ namespace EstateAgencyConsole
             Console.Read();
             DbClient.Disconnect();
         }
-        */
     }
 }
