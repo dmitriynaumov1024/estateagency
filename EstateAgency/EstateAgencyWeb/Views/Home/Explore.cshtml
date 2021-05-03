@@ -1,0 +1,30 @@
+﻿@using EstateAgency.Entities;
+@using EstateAgency.Database;
+
+@{
+    Layout = "_Basic";
+    ViewData["Title"] = "Explore";
+}
+
+<p>List of Estate objects:</p>
+@{
+    foreach (var i in DbAdvanced.GetEstateObjects())
+    {
+        <div class="customcard">
+            <table>
+                <tr>
+                    <td>Post date</td>
+                    <td>@i.PostDate.ToString()</td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>@i.Price.ToString() USD</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>@i.Description</td>
+                </tr>
+            </table>
+        </div>
+    }
+}

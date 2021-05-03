@@ -1,5 +1,8 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+* {
+    font-family: 'Segoe UI', sans-serif;
+}
 
 a.navbar-brand {
   white-space: normal;
@@ -24,17 +27,6 @@ a {
   border-color: #1861ac;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -56,16 +48,77 @@ button.accept-policy {
 html {
   position: relative;
   min-height: 100%;
+  background-color: #fbfbfb;
 }
 
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  
 }
+
+main {
+    width: 60%;
+    min-width: 400px;
+    margin:auto;
+}
+
+table {
+    border-spacing: 0.25em;
+    min-width: 100%;
+}
+
+td, th {
+    background-color: #f8f8fe;
+    padding: 1em;
+}
+
+h2 {
+    margin-top: 2em;
+    text-align: center;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=tel]
+{
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    font-size: 80%;
+    padding: 0.15em;
+}
+
+button {
+    margin: auto;
+    display: block;
+    width: auto;
+}
+
+.customcard {
+    padding: 2em;
+    margin: 2em auto 2em;
+    border-radius: 8px;
+    border: 1px solid #cdcdcd;
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1);
+    background-color: #fefefe;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
-  width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.container60 {
+    width: 60%;
+    margin: auto;
+}
+
+.container20em {
+    width: 20em;
+    margin:auto;
 }
