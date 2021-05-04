@@ -28,3 +28,45 @@
         </div>
     }
 }
+<form class="customcard" asp-action="Explore" method="get">
+    <div style="width: 40%; min-width: 24em;">
+        <label>Область:</label>
+        <select name="region" id="regionselect">
+            @foreach (string i in DbAdvanced.Regions)
+            {
+                <option value="@i">@i </option>
+            }
+        </select>
+
+        <label>Населений пункт:</label>
+        <select name="town" id="townselect">
+        </select>
+
+        <label>Район (необов'язково):</label>
+        <select name="district" id="districtselect">
+        </select>
+
+        <label>Тип нерухомості:</label>
+        <select name="variant" id="variantselect">
+            <option value="h">Будинок</option>
+            <option value="f">Квартира</option>
+            <option value="l">Земельна ділянка</option>
+            <option value="o">Інше</option>
+        </select>
+
+        <label>Впорядкувати:</label>
+        <select name="order" id="orderselect">
+            <option value="new">За новизною</option>
+            <option value="price">За зростанням ціни</option>
+            <option value="prisqm">За ціною кв.м.</option>
+            <option value="pop">За популярністю</option>
+            <option value="state">За станом</option>
+        </select>
+
+        <label id="pricedisplay">Максимальна ціна:</label>
+        <input name="maxprice" type="range" min="1000" max="100000" oninput="$('#pricedisplay').html('Максимальна ціна: ' +$('#priceslider').val()+' USD')" id="priceslider" />
+        <br />
+        <button type="submit">Застосувати фільтр</button>
+    </div>
+</form>
+

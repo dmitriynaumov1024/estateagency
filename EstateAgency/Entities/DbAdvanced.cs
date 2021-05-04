@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Apache.Ignite.Core;
 using Apache.Ignite.Core.Cache.Query;
-using Apache.Ignite.Core.Client;
 using Apache.Ignite.Core.Client.Cache;
 using Apache.Ignite.Core.Cache.Configuration;
 using Apache.Ignite.Core.Client.Transactions;
@@ -89,6 +88,10 @@ namespace EstateAgency.Database
             return 'p';
         }
 
+        /// <summary>
+        /// Simply get all estate objects
+        /// </summary>
+        /// <returns></returns>
         public static ICollection<EstateObject> GetEstateObjects()
         {
             List<EstateObject> result = new List<EstateObject>();
@@ -110,5 +113,252 @@ namespace EstateAgency.Database
             }
             return result;
         }
+
+        /// <summary>
+        /// Get houses in mentioned location, optionally order and set max price.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="price"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public static Dictionary<int, House> GetHouses(int location, int price=0, string order="")
+        {
+            string querystring1 = "", querystring2 = "";
+            switch (order)
+            {
+                case "new":
+                    querystring1 = "select _key, _val, PostDate, Price from Houses ";
+                    querystring2 = " order by PostDate desc;";
+                    break;
+                case "price":
+                    querystring1 = "select _key, _val, Price from Houses ";
+                    querystring2 = " order by Price;";
+                    break;
+                case "prisqm":
+                    querystring1 = "select _key, _val, Price, HomeArea, (Price/HomeArea) as SqmPrice from Houses ";
+                    querystring2 = " order by SqmPrice;";
+                    break;
+                case "pop":
+                    querystring1 = "select _key, _val, Price, Cnt from Houses A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring2 = " order by Cnt desc;";
+                    break;
+                case "state":
+                    querystring1 = "select _key, _val, Price, State from Houses ";
+                    querystring2 = " order by State desc;";
+                    break;
+
+                default:
+                    querystring1 = "select _key, _val, Price from Houses ";
+                    querystring2 = ";";
+                    break;
+            }
+
+            if (price>0) querystring1 += $" where Price<{price} " + querystring2;
+            else querystring1 += querystring2;
+            Dictionary<int, House> result = new Dictionary<int, House>();
+            foreach (var row in HouseCache.Query(new SqlFieldsQuery(querystring1)))
+            {
+                result[(int)row[0]] = row[1] as House;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get flats in mentioned location, optionally order and set max price.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="price"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public static Dictionary<int, Flat> GetFlats(int location, int price=0, string order="")
+        {
+            string querystring1 = "", querystring2 = "";
+            switch (order)
+            {
+                case "new":
+                    querystring1 = "select _key, _val, PostDate, Price from Flats ";
+                    querystring2 = " order by PostDate desc;";
+                    break;
+                case "price":
+                    querystring1 = "select _key, _val, Price from Flats ";
+                    querystring2 = " order by Price;";
+                    break;
+                case "prisqm":
+                    querystring1 = "select _key, _val, Price, HomeArea, (Price/HomeArea) as SqmPrice from Flats ";
+                    querystring2 = " order by SqmPrice;";
+                    break;
+                case "pop":
+                    querystring1 = "select _key, _val, Price, Cnt from Flats A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring2 = " order by Cnt desc;";
+                    break;
+                case "state":
+                    querystring1 = "select _key, _val, Price, State from Flats ";
+                    querystring2 = " order by State desc;";
+                    break;
+
+                default:
+                    querystring1 = "select _key, _val, Price from Flats ";
+                    querystring2 = ";";
+                    break;
+            }
+
+            if (price>0) querystring1 += $" where Price<={price} " + querystring2;
+            else querystring1 += querystring2;
+            Dictionary<int, Flat> result = new Dictionary<int, Flat>();
+            foreach (var row in FlatCache.Query(new SqlFieldsQuery(querystring1)))
+            {
+                result[(int)row[0]] = row[1] as Flat;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get landplots in mentioned location, optionally order and set max price.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="price"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public static Dictionary<int, Landplot> GetLandplots(int location, int price=0, string order="")
+        {
+            string querystring1 = "", querystring2 = "";
+            switch (order)
+            {
+                case "new":
+                    querystring1 = "select _key, _val, PostDate, Price from Landplots ";
+                    querystring2 = " order by PostDate desc;";
+                    break;
+                case "price":
+                    querystring1 = "select _key, _val, Price from Landplots ";
+                    querystring2 = " order by Price;";
+                    break;
+                case "prisqm":
+                    querystring1 = "select _key, _val, Price, LandArea, (Price/LandArea) as SqmPrice from Landplots ";
+                    querystring2 = " order by SqmPrice;";
+                    break;
+                case "pop":
+                    querystring1 = "select _key, _val, Price, Cnt from Landplots A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring2 = " order by Cnt desc;";
+                    break;
+                case "state":
+                    querystring1 = "select _key, _val, Price, State from Landplots ";
+                    querystring2 = " order by State desc;";
+                    break;
+
+                default:
+                    querystring1 = "select _key, _val, Price from Landplots ";
+                    querystring2 = ";";
+                    break;
+            }
+
+            if (price>0) querystring1 += $" where Price<={price} " + querystring2;
+            else querystring1 += querystring2;
+            Dictionary<int, Landplot> result = new Dictionary<int, Landplot>();
+            foreach (var row in LandplotCache.Query(new SqlFieldsQuery(querystring1)))
+            {
+                result[(int)row[0]] = row[1] as Landplot;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get other type bjects in mentioned location, optionally order and set max price.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="price"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public static Dictionary<int, EstateObject> GetEstateObjects(int location, int price=0, string order="")
+        {
+            string querystring1 = "", querystring2 = "";
+            switch (order)
+            {
+                case "new":
+                    querystring1 = "select _key, _val, PostDate, Price from EstateObjects ";
+                    querystring2 = " order by PostDate desc;";
+                    break;
+                case "price":
+                    querystring1 = "select _key, _val, Price from EstateObjects ";
+                    querystring2 = " order by Price;";
+                    break;
+                case "pop":
+                    querystring1 = "select _key, _val, Price, Cnt from EstateObjects A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring2 = " order by Cnt desc;";
+                    break;
+                case "state":
+                    querystring1 = "select _key, _val, Price, State from EstateObjects ";
+                    querystring2 = " order by State desc;";
+                    break;
+
+                default:
+                    querystring1 = "select _key, _val, Price from EstateObjects ";
+                    querystring2 = ";";
+                    break;
+            }
+
+            if (price>0) querystring1 += $" where Price<={price} " + querystring2;
+            else querystring1 += querystring2;
+            Dictionary<int, EstateObject> result = new Dictionary<int, EstateObject>();
+            foreach (var row in ObjectCache.Query(new SqlFieldsQuery(querystring1)))
+            {
+                result[(int)row[0]] = row[1] as EstateObject;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get list of towns of metioned region. Is used for dropdowns.
+        /// </summary>
+        public static ICollection<string> GetTownsOfRegion(string region)
+        {
+            List<string> result = new List<string>();
+            foreach (var row in LocationCache.Query(new SqlFieldsQuery($"select distinct Town from Locations where Region='{region}';")))
+            {
+                result.Add (row[0] as string);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get a dictionary where key is location id and value is district name. Is used for dropdowns.
+        /// </summary>
+        public static Dictionary<string, string> GetDistrictsOfTown(string town)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach (var row in LocationCache.Query(new SqlFieldsQuery($"select _key, District from Locations where Town='{town}';")))
+            {
+                result[row[0].ToString()] = row[1] as string;
+            }
+            return result;
+        }
+
+        public static string[] Regions =
+        {
+            "Вінницька",
+            "Волинська",
+            "Дніпропетровська",
+            "Донецька",
+            "Житомирська",
+            "Закарпатська",
+            "Запорізька",
+            "Івано-Франківська",
+            "Київська",
+            "Кіровоградська",
+            "Луганська",
+            "Львівська",
+            "Миколаївська",
+            "Одеська",
+            "Полтавська",
+            "Рівненська",
+            "Сумська",
+            "Тернопільська",
+            "Харківська",
+            "Херсонська",
+            "Хмельницька",
+            "Черкаська",
+            "Чернівецька",
+            "Чернігівська",
+            "АР Крим",
+        };
     }
 }

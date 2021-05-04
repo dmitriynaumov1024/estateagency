@@ -290,8 +290,10 @@ namespace EstateAgency.Entities
                         "Town name length should be from 2 to 30 characters.",
                         "Region"
                     );
+                if (District==null || District=="")
+                    return ValidationResult.Success;
 
-                if (District!=null && (District.Length > 30) || District.Length < 2)
+                if (District.Length > 30 || District.Length < 2)
                     return new ValidationResult(
                         "District name length should be from 2 to 30 characters.",
                         "Region"

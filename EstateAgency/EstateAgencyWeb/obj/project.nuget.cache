@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "1VG+jywkc1xRoV0PtIe0V7ijJun4RDp4p5yvVIPaZVPYcci/S7GqXPS1I/kjvNjPAK5MiaM8m7157/qNCiVgcw==",
+  "dgSpecHash": "xF+0p0Slw+R9FW7sTSL/Ut/cRdwa/n380oRvTfILG8yDJlaEhHHTH5yPBCpSu+C2KepwT4S9hIESRj/9S72JZg==",
   "success": true,
   "projectFilePath": "E:\\Proj_1\\estateagency\\EstateAgency\\EstateAgencyWeb\\EstateAgencyWeb.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Dima\\.nuget\\packages\\jquery\\1.8.0\\jquery.1.8.0.nupkg.sha512",
+    "C:\\Users\\Dima\\.nuget\\packages\\microsoft.jquery.unobtrusive.ajax\\3.2.6\\microsoft.jquery.unobtrusive.ajax.3.2.6.nupkg.sha512"
+  ],
   "logs": []
 }

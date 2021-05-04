@@ -1,0 +1,35 @@
+﻿@using EstateAgency.Entities;
+@using EstateAgency.Database;
+
+@{
+    Layout = "_Basic";
+    ViewData["Title"] = "New object";
+}
+
+<h2>New object</h2>
+<form asp-action="Post_Stage1" method="get">
+    <label>Область:</label>
+    <select name="region" id="regionselect">
+        @foreach (string i in DbAdvanced.Regions)
+        {
+            <option value="@i">@i </option>
+        }
+    </select>
+
+    <label>Населений пункт:</label>
+    <select name="town" id="townselect">
+    </select>
+
+    <label>Район (необов'язково):</label>
+    <select name="district" id="districtselect">
+    </select>
+
+    <label>Тип нерухомості:</label>
+    <select name="variant" id="variantselect">
+        <option value="h">Будинок</option>
+        <option value="f">Квартира</option>
+        <option value="l">Земельна ділянка</option>
+        <option value="o">Інше</option>
+    </select>
+    <button type="submit">Продовжити</button>
+</form>

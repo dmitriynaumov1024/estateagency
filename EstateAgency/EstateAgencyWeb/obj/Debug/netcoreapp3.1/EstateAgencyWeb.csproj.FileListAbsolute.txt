@@ -12,12 +12,9 @@ E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Esta
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Entities.dll
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Apache.Ignite.Core.dll
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Entities.pdb
-E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Apache.Ignite.Core.xml
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.csprojAssemblyReference.cache
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.AssemblyInfoInputs.cache
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.AssemblyInfo.cs
-E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.csproj.CoreCompileInputs.cache
-E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.MvcApplicationPartsAssemblyInfo.cache
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.RazorAssemblyInfo.cache
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.RazorAssemblyInfo.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.TagHelpers.input.cache
@@ -42,3 +39,6 @@ E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Esta
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Basic.cshtml.g.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Signup.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\libman.json
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.csproj.CoreCompileInputs.cache
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.MvcApplicationPartsAssemblyInfo.cache

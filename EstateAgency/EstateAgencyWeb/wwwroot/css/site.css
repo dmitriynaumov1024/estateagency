@@ -78,17 +78,22 @@ h2 {
     text-align: center;
 }
 
-input[type=text], input[type=password], input[type=email], input[type=tel]
+input[type=text], input[type=password], input[type=email], input[type=tel], input[type=range]
 {
     width: 100%;
     display: block;
     box-sizing: border-box;
 }
 
+select {
+    width: 100%;
+}
+
 label {
     display: block;
     font-size: 80%;
     padding: 0.15em;
+    margin-top: 1em;
 }
 
 button {

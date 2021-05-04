@@ -78,12 +78,58 @@ namespace EstateAgencyWeb.Controllers
             return View("Signup");
         }
 
+        
         public ActionResult Explore()
         {
+            List<EstateObject> result = new List<EstateObject>();
+
             return View ("Explore");
         }
 
+        [HttpGet("/Post")]
+        public ActionResult Post_Stage1(int district=-1, string variant="")
+        {
+            if (district == -1)
+            {
+                return View ("Post");
+            }
+            else
+            {
+                ViewData["location"] = district;
+                ViewData["variant"] = variant;
+                switch (variant)
+                {
+                    case "h":
+                        return View ("PostHouse");
+                    case "f":
+                        return View ("PostFlat");
+                    case "l":
+                        return View ("PostLandplot");
+                    default:
+                        return View ("PostObject");
+                }
+            }
+        }
 
+        [HttpPost]
+        public ActionResult Post_Stage2(int location, string variant = "")
+        {
+            switch (variant)
+            {
+                case "h":
+                    House h = new House
+                    {
+                        PostDate = DateTime.UtcNow
+                    };
+                    return View ("PostHouse");
+                case "f":
+                    return View ("PostFlat");
+                case "l":
+                    return View ("PostLandplot");
+                default:
+                    return View ("PostObject");
+            }
+        }
 
         // --- IDK what is this -----------------------------------------------
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
