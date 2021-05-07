@@ -10,7 +10,6 @@ E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Esta
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\EstateAgencyWeb.Views.dll
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\EstateAgencyWeb.Views.pdb
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Entities.dll
-E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Apache.Ignite.Core.dll
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\Entities.pdb
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.csprojAssemblyReference.cache
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.AssemblyInfoInputs.cache
@@ -42,3 +41,9 @@ E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razo
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\bin\Debug\netcoreapp3.1\libman.json
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.csproj.CoreCompileInputs.cache
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\EstateAgencyWeb.MvcApplicationPartsAssemblyInfo.cache
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Post.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\PostFlat.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\PostHouse.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\PostLandplot.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\PostObject.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\ViewObject.cshtml.g.cs

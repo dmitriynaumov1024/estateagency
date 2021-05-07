@@ -1,0 +1,141 @@
+﻿@using EstateAgency.Entities;
+@{
+    Layout = "_Basic"; 
+    ViewData["Title"] = "Object";
+}
+
+<p>Інформація про об'єкт</p>
+<div class="customcard">
+    <table class="objectdetail">
+        @* Here goes usual information *@
+        <tr>
+            <td>Ціна</td>
+            <td><b>@Model.Price</b> USD</td>
+        </tr>
+        <tr>
+            <td>Продавець</td>
+            <td><b>@ViewData["Seller"] </b></td>
+        </tr>
+        <tr>
+            <td>Опубліковано</td>
+            <td>@(((DateTime)Model.PostDate).ToLocalTime())</td>
+        </tr>
+
+        @* Additional for house *@
+        @if (Model.Variant == (byte)'h')
+        {
+            <tr>
+                <td>Варіант</td>
+                <td>Будинок</td>
+            </tr>
+            <tr>
+                <td>Площа земельної ділянки</td>
+                <td>@Model.LandArea а </td>
+            </tr>
+            <tr>
+                <td>Житлова площа</td>
+                <td>@Model.HomeArea кв.м. </td>
+            </tr>
+            <tr>
+                <td>Ціна 1 кв.м.</td>
+                <td>@((int)(Model.Price / Model.HomeArea)) USD </td>
+            </tr>
+            <tr>
+                <td>Кількість поверхів</td>
+                <td>@Model.FloorCount</td>
+            </tr>
+            <tr>
+                <td>Кількість кімнат</td>
+                <td>@Model.RoomCount</td>
+            </tr>
+        }
+
+        @* Additional for flat *@
+        @if (Model.Variant == (byte)'f')
+        {
+            <tr>
+                <td>Варіант</td>
+                <td>Квартира</td>
+            </tr>
+            <tr>
+                <td>Номер поверху</td>
+                <td>@Model.Floor</td>
+            </tr>
+            <tr>
+                <td>Житлова площа</td>
+                <td>@Model.HomeArea кв.м.</td>
+            </tr>
+            <tr>
+                <td>Ціна 1 кв.м.</td>
+                <td>@((int)(Model.Price / Model.HomeArea)) USD </td>
+            </tr>
+            <tr>
+                <td>К-ть кімнат</td>
+                <td>@Model.RoomCount</td>
+            </tr>
+        }
+
+        @* Additional for landplot *@
+        @if (Model.Variant == (byte)'l')
+        {
+            <tr>
+                <td>Варіант</td>
+                <td>Земельна ділянка</td>
+            </tr>
+            <tr>
+                <td>Площа</td>
+                <td>@Model.LandArea a</td>
+            </tr>
+            <tr>
+                <td>Ціна 1 а землі</td>
+                <td>@((int)(Model.Price / Model.LandArea)) USD </td>
+            </tr>
+        }
+
+        @if (Model.Variant == (byte)'l')
+        {
+            <tr>
+                <td>Варіант</td>
+                <td>інше</td>
+            </tr>
+        }
+
+        <tr>
+            <td>Опис</td>
+            <td>@Model.Description</td>
+        </tr>
+        <tr>
+            <td>Теги</td>
+            <td>
+                @if ((Model as EstateObject).Tags != null)
+                {
+                    foreach (string i in (Model as EstateObject).Tags)
+                    {<span>@i</span><br />}
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>URL фотографій</td>
+            <td>
+                @if ((Model as EstateObject).PhotoUrls != null)
+                {
+                    foreach (string i in (Model as EstateObject).PhotoUrls)
+                    {<span>@i</span><br />}
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>Стан [0..5]</td>
+            <td>@Model.State</td>
+        </tr>
+        <tr>
+            <td>Локація</td>
+            <td>@ViewData["LocationFull"]</td>
+        </tr>
+        <tr>
+            <td>Адреса:</td>
+            <td>@(Model.StreetName + ", буд. " + Model.HouseNumber + ((Model as EstateObject).Variant==(byte)'f'? (", кв. " + Model.FlatNumber.ToString()):""))</td>
+        </tr>
+
+    </table>
+</div>

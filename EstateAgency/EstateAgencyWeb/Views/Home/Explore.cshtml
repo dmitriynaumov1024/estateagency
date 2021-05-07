@@ -4,34 +4,43 @@
 @{
     Layout = "_Basic";
     ViewData["Title"] = "Explore";
+    ViewData["script"] = "site-explore.js";
 }
 
 <p>List of Estate objects:</p>
 @{
-    foreach (var i in DbAdvanced.GetEstateObjects())
+    foreach (KeyValuePair<int, EstateObject> pair in Model as Dictionary<int, EstateObject>)
     {
-        <div class="customcard">
-            <table>
-                <tr>
-                    <td>Post date</td>
-                    <td>@i.PostDate.ToString()</td>
-                </tr>
-                <tr>
-                    <td>Price</td>
-                    <td>@i.Price.ToString() USD</td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td>@i.Description</td>
-                </tr>
-            </table>
-        </div>
+    EstateObject i = pair.Value;
+    <div class="customcard">
+        <table class="objectdetail">
+            <tr>
+                <td>Дата публікації</td>
+                <td>@i.PostDate.ToString()</td>
+            </tr>
+            <tr>
+                <td>Ціна</td>
+                <td>@i.Price.ToString() USD</td>
+            </tr>
+            <tr style="max-height:7em; overflow: hidden">
+                <td>Опис</td>
+                <td>@i.Description</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="ViewObject?id=@pair.Key">Більше</a>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
     }
 }
 <form class="customcard" asp-action="Explore" method="get">
     <div style="width: 40%; min-width: 24em;">
         <label>Область:</label>
-        <select name="region" id="regionselect">
+        <select id="regionselect">
             @foreach (string i in DbAdvanced.Regions)
             {
                 <option value="@i">@i </option>
@@ -39,7 +48,7 @@
         </select>
 
         <label>Населений пункт:</label>
-        <select name="town" id="townselect">
+        <select id="townselect">
         </select>
 
         <label>Район (необов'язково):</label>
@@ -65,6 +74,8 @@
 
         <label id="pricedisplay">Максимальна ціна:</label>
         <input name="maxprice" type="range" min="1000" max="100000" oninput="$('#pricedisplay').html('Максимальна ціна: ' +$('#priceslider').val()+' USD')" id="priceslider" />
+        <br />
+        <br />
         <br />
         <button type="submit">Застосувати фільтр</button>
     </div>

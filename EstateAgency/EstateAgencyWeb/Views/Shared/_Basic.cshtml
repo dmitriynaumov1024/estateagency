@@ -15,12 +15,11 @@
 
     <footer class="footer container60">
         <div>
-            &copy; 2021 - EstateAgencyWeb
+            &copy; 2021 - EstateAgencyWeb - Dmitriy Naumov - naumov1024@gmail.com
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/js/site.js"></script>
-    <script src="~/js/site-@(ViewData["Title"].ToString().ToLower()+".js")"></script>
+    @if(ViewData["script"]!=null){<script src="~/js/@ViewData["script"]"></script>}
 </body>
 </html>

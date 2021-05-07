@@ -4,12 +4,13 @@
 @{
     Layout = "_Basic";
     ViewData["Title"] = "New object";
+    ViewData["script"] = "site-post.js";
 }
 
 <h2>New object</h2>
 <form asp-action="Post_Stage1" method="get">
     <label>Область:</label>
-    <select name="region" id="regionselect">
+    <select id="regionselect">
         @foreach (string i in DbAdvanced.Regions)
         {
             <option value="@i">@i </option>
@@ -17,7 +18,7 @@
     </select>
 
     <label>Населений пункт:</label>
-    <select name="town" id="townselect">
+    <select id="townselect">
     </select>
 
     <label>Район (необов'язково):</label>

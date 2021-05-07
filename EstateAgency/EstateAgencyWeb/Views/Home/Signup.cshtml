@@ -1,15 +1,43 @@
-﻿@{
+﻿@using EstateAgency.Database;
+@{
     Layout = "_Basic";
     ViewData["Title"] = "Sign up";
+    ViewData["script"] = "site-signup.js";
 }
 
 <h2>Create new account</h2>
-<form asp-action="Login" asp-controller="Home" method="post" class="customcard container20em">
-    <label>Phone number</label>
-    <input type="tel" name="phone" /> 
+<form asp-action="Signup" asp-controller="Home" method="post" class="customcard container20em">
+    <label>Номер телефону</label>
+    <input type="tel" name="phone" />
     <br />
-    <label>Password</label> 
-    <input type="text" name="password" maxlength="32"/>
+    <label>Пароль</label>
+    <input type="text" name="password" maxlength="32" />
+    <br />
+    <label>Email</label>
+    <input type="email" name="email" maxlength="64" />
+    <br />
+    <label>Ім'я</label>
+    <input type="text" name="name" maxlength="32" />
+    <br />
+    <label>Прізвище</label>
+    <input type="text" name="surname" maxlength="32" />
+    <br />
+    <label>Область:</label>
+    <select id="regionselect">
+        @foreach (string i in DbAdvanced.Regions)
+        {
+            <option value="@i">@i </option>
+        }
+    </select>
+
+    <label>Населений пункт:</label>
+    <select id="townselect">
+    </select>
+
+    <label>Район (необов'язково):</label>
+    <select name="location" id="districtselect">
+    </select>
+
     <p style='color: darkred; font-size:80%; font-weight: bold; line-height: 200%;'>@ViewData["ErrorMessage"] &ensp;</p>
     <button type="submit">Proceed</button>
 </form>
