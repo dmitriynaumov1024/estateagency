@@ -1,0 +1,96 @@
+Topic: 
+--- Estate agency
+
+Software specification:
+DB: Apache Ignite
+Customer's client: .NET Windows executable OR ASP.NET site
+Admin's client: .NET Windows executable
+
+User's roles:
+0) System?
+1) Admin
+2) Agent
+3) Customer
+
+General project task: 
+--- Build an Estate agency application 
+--- which allows customers to:
+------- Create accounts
+------- Publish estate objects;
+------- Explore estate objects;
+------- Buy objects (make an order?);
+------- Publish client requests;
+------- Add favoured objects to bookmarks.
+--- Which allows agents to:
+------- Explore estate objects;
+------- Accept orders
+--- Which allows admins to:
+------- Explore estate objects
+------- Explore client requests
+------- Modify/delete any data
+------- Explore buying orders?
+
+Publish estate object: 
+1) Select variant
+2) Provide information
+3) Submit data
+4) [external] Data is checked by admins
+
+Explore estate objects:
+1) Apply filters (variant, region, price, quality state)
+2) [external] Select data from database
+3) Get the list of appropriate objects
+
+Buy estate objects:
+1) Submit a buy request
+2) [external] Find an agent to serve this object
+3) [external] Agent contacts with customer for the further examination of object before the deal
+4) [external] If the deal is made, object is marked as sold
+
+Publish client requests:
+1) Provide descrition (location, price, needed state...)
+2) Submit
+3) [external] request is matched with existing objects manually or automatically
+
+Add favoured objects to bookmarks:
+1) Select an object and press 'Add to bookmarks' button
+2) [external] entry is added to table
+
+Accept orders:
+1) System makes pool of order-agent links
+2) Agent examines object info and decides to accept or reject order.
+3) If order is accepted, links that include given object become inactive.
+4) [distant] if deal is made, order-agent links of given object are permanently deleted.
+
+To-be entity set: {
+    /* Real */
+    Person {
+        Agent info,
+        Credentials
+    }, 
+    EstateObject { },
+    ClientRequest { },
+    Deal { },
+    /* Service */ 
+    Location,
+    Bookmarks,
+    Order-agent pool,
+    ...
+}
+
+Explorable data for customer:
+--- All Estate objects
+--- Own Requests
+--- Own Bookmarks
+--- Own Orders
+--- Own deals
+
+Explorable data for agent:
+--- All Estate objects
+--- All Requests
+--- Orders
+--- Own deals
+--- Own stats
+
+Explorable data for admin:
+--- Everything

@@ -301,7 +301,7 @@ namespace EstateAgency.Database
                 if (!(ClientWishCache.ContainsKey(value.WishID)))
                 {
                     tx.Commit();
-                    throw new ReferentialException ("Can not put new entry into Bookmark cache.")
+                    throw new ReferentialException ("Can not put new entry into Match cache.")
                     {
                         Operation = "put",
                         TableName = "Match",
@@ -314,7 +314,7 @@ namespace EstateAgency.Database
                 if (!(ObjectCache.ContainsKey(value.ObjectID)))
                 {
                     tx.Commit();
-                    throw new ReferentialException ("Can not put new entry into Bookmark cache.")
+                    throw new ReferentialException ("Can not put new entry into Match cache.")
                     {
                         Operation = "put",
                         TableName = "Match",
