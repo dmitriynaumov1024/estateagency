@@ -7,37 +7,8 @@
     ViewData["script"] = "site-explore.js";
 }
 
-<p>List of Estate objects:</p>
-@{
-    foreach (KeyValuePair<int, EstateObject> pair in Model as Dictionary<int, EstateObject>)
-    {
-    EstateObject i = pair.Value;
-    <div class="customcard">
-        <table class="objectdetail">
-            <tr>
-                <td>Дата публікації</td>
-                <td>@i.PostDate.ToString()</td>
-            </tr>
-            <tr>
-                <td>Ціна</td>
-                <td>@i.Price.ToString() USD</td>
-            </tr>
-            <tr style="max-height:7em; overflow: hidden">
-                <td>Опис</td>
-                <td>@i.Description</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <a href="ViewObject?id=@pair.Key">Більше</a>
-                </td>
-            </tr>
-        </table>
-        
-    </div>
-        
-    }
-}
 <form class="customcard" asp-action="Explore" method="get">
+    <p>Фільтр</p>
     <div style="width: 40%; min-width: 24em;">
         <label>Область:</label>
         <select id="regionselect">
@@ -80,4 +51,36 @@
         <button type="submit">Застосувати фільтр</button>
     </div>
 </form>
+
+<h2>Доступні об'єкти нерухомості</h2>
+@{
+    if((Model as Dictionary<int, EstateObject>).Count==0) { <p style="margin-top:10em;">Нічого не знайдено.</p>}
+    foreach (KeyValuePair<int, EstateObject> pair in Model as Dictionary<int, EstateObject>)
+    {
+        EstateObject i = pair.Value;
+    <div class="customcard">
+        <table class="objectdetail">
+            <tr>
+                <td>Дата публікації</td>
+                <td>@i.PostDate.ToString()</td>
+            </tr>
+            <tr>
+                <td>Ціна</td>
+                <td>@i.Price.ToString() USD</td>
+            </tr>
+            <tr style="max-height:7em; overflow: hidden">
+                <td>Опис</td>
+                <td>@i.Description</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="ViewObject?id=@pair.Key">Більше</a>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    }
+}
 

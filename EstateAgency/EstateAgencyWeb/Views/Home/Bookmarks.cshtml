@@ -1,0 +1,14 @@
+﻿@{ 
+    Layout="_Basic";
+    ViewData["Title"]="Bookmarks";
+    ViewData["script"]="site-bookmarks.js";
+}
+
+@foreach(var pair in Model as Dictionary<int, string>)
+{
+    <div class="container20em customcard">
+        <p style="text-align:justify;">@pair.Value</p>
+        <br/>
+        <a href="/ViewObject?id=@(pair.Key)">Детальніше &gt;&gt;</a>
+    </div>
+}

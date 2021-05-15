@@ -1,0 +1,4 @@
+E:\Proj_1\estateagency\EstateAgencyMongo\bin\Debug\netcoreapp3.1\EstateAgencyMongo.exe
+E:\Proj_1\estateagency\EstateAgencyMongo\obj\Debug\netcoreapp3.1\EstateAgencyMongo.csprojAssemblyReference.cache
+E:\Proj_1\estateagency\EstateAgencyMongo\obj\Debug\netcoreapp3.1\EstateAgencyMongo.AssemblyInfoInputs.cache
+E:\Proj_1\estateagency\EstateAgencyMongo\obj\Debug\netcoreapp3.1\EstateAgencyMongo.AssemblyInfo.cs

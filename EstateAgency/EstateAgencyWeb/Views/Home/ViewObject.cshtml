@@ -2,6 +2,7 @@
 @{
     Layout = "_Basic"; 
     ViewData["Title"] = "Object";
+    ViewData["script"] = "site-viewobject.js";
 }
 
 <p>Інформація про об'єкт</p>
@@ -92,7 +93,7 @@
             </tr>
         }
 
-        @if (Model.Variant == (byte)'l')
+        @if (Model.Variant == (byte)'o')
         {
             <tr>
                 <td>Варіант</td>
@@ -137,5 +138,18 @@
             <td>@(Model.StreetName + ", буд. " + Model.HouseNumber + ((Model as EstateObject).Variant==(byte)'f'? (", кв. " + Model.FlatNumber.ToString()):""))</td>
         </tr>
 
+        @* Bookmarks, a holy piece of shit *@
+        @if(ViewData["isBookmarked"]!=null) 
+        { 
+        <tr>
+            <td colspan="2">
+                <button id="bookmark"></button>
+                <script>
+                    var currentObjectBookmark = @((bool)ViewData["isBookmarked"]?"true":"false");
+                    var objectID = @ViewData["ObjectID"];
+                </script>
+            </td>
+        </tr>
+        }
     </table>
 </div>

@@ -46,7 +46,7 @@ namespace EstateAgencyWeb.Controllers
             switch (DbAdvanced.CheckCredentials(phone, password))
             {
                 case 'n':
-                    HttpContext.Session.SetString("phone", phone);
+                    HttpContext.Session.SetString("Phone", phone);
                     Credential cr = DbClient.CredentialCache.Get(phone);
                     HttpContext.Session.SetInt32("PersonID", cr.PersonID);
                     HttpContext.Session.SetString("Privilegies", ((char)cr.Privilegies).ToString());
@@ -223,11 +223,23 @@ namespace EstateAgencyWeb.Controllers
             {
                 Location l = DbClient.LocationCache.Get(h.LocationID);
                 Person p = DbClient.PersonCache.Get(h.SellerID);
+                ViewData["ObjectID"] = id;
                 ViewData["LocationFull"] = l.Region + " область, " + l.Town + ((l.District.Length > 0) ? (", " + l.District + " район") : "");
                 ViewData["Seller"] = $"{p.Name} {p.Surname}, тел. {p.Phone}";
+                int? personid = HttpContext.Session.GetInt32("PersonID");
+                if (personid!=null)
+                    ViewData["isBookmarked"] = DbClient.BookmarkCache.ContainsKey((long)personid<<32+id);
                 return View("ViewObject", h);
             }
             return new NotFoundResult();
+        }
+
+        [HttpGet]
+        public ActionResult Bookmarks()
+        {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if (personid==null)
+                return new UnauthorizedResult();
         }
 
         // --- IDK what is this -----------------------------------------------

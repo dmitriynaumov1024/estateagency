@@ -29,7 +29,7 @@ namespace EstateAgency.Database
                     tx.Commit();
                     throw new ReferentialException ("Can not create new account.")
                     {
-                        ReadableMessage = $"Con not create account because account with phone {person.Phone} already exists."
+                        ReadableMessage = $"Can not create account because account with phone {person.Phone} already exists."
                     };
                 }
                 if (!LocationCache.ContainsKey(person.LocationID))
@@ -37,7 +37,7 @@ namespace EstateAgency.Database
                     tx.Commit();
                     throw new ReferentialException ("Can not create new account.")
                     {
-                        ReadableMessage = $"Con not create account because location with key {person.LocationID} does not exist."
+                        ReadableMessage = $"Can not create account because location with key {person.LocationID} does not exist."
                     };
                 }
 
@@ -127,33 +127,33 @@ namespace EstateAgency.Database
             switch (order)
             {
                 case "new":
-                    querystring1 = "select _key, _val, PostDate, Price, LocationID from Houses ";
+                    querystring1 = $"select _key, _val, PostDate, Price, LocationID, isOpen from Houses where LocationID={location} and isOpen=true ";
                     querystring2 = " order by PostDate desc;";
                     break;
                 case "price":
-                    querystring1 = "select _key, _val, Price, LocationID from Houses ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from Houses where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Price;";
                     break;
                 case "prisqm":
-                    querystring1 = "select _key, _val, Price, HomeArea, (Price/HomeArea) as SqmPrice, LocationID from Houses ";
+                    querystring1 = $"select _key, _val, Price, HomeArea, (Price/HomeArea) as SqmPrice, LocationID, isOpen from Houses where LocationID={location} and isOpen=true ";
                     querystring2 = " order by SqmPrice;";
                     break;
                 case "pop":
-                    querystring1 = "select _key, _val, Price, Cnt, LocationID from Houses A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from Houses A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
-                    querystring1 = "select _key, _val, Price, LocationID, State from Houses ";
+                    querystring1 = $"select _key, _val, Price, LocationID, State, isOpen from Houses where LocationID={location} and isOpen=true ";
                     querystring2 = " order by State desc;";
                     break;
 
                 default:
-                    querystring1 = "select _key, _val, Price, LocationID from Houses ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from Houses where LocationID={location} and isOpen=true ";
                     querystring2 = ";";
                     break;
             }
 
-            if (price>0) querystring1 += $" where Price<={price} and LocationID={location} " + querystring2;
+            if (price>0) querystring1 += $" and Price<={price} " + querystring2;
             else querystring1 += querystring2;
             Dictionary<int, House> result = new Dictionary<int, House>();
             foreach (var row in HouseCache.Query(new SqlFieldsQuery(querystring1)))
@@ -176,34 +176,34 @@ namespace EstateAgency.Database
             switch (order)
             {
                 case "new":
-                    querystring1 = "select _key, _val, PostDate, Price, LocationID from Flats ";
+                    querystring1 = $"select _key, _val, PostDate, Price, LocationID, isOpen from Flats where LocationID={location} and isOpen=true ";
                     querystring2 = " order by PostDate desc;";
                     break;
                 case "price":
-                    querystring1 = "select _key, _val, Price, LocationID from Flats ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from Flats where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Price;";
                     break;
                 case "prisqm":
-                    querystring1 = "select _key, _val, Price, HomeArea, (Price/HomeArea) as SqmPrice, LocationID from Flats ";
+                    querystring1 = $"select _key, _val, Price, HomeArea, (Price/HomeArea) as SqmPrice, LocationID, isOpen from Flats where LocationID={location} and isOpen=true ";
                     querystring2 = " order by SqmPrice;";
                     break;
                 case "pop":
-                    querystring1 = "select _key, _val, Price, Cnt, LocationID from Flats A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from Flats A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
-                    querystring1 = "select _key, _val, Price, State, LocationID from Flats ";
+                    querystring1 = $"select _key, _val, Price, State, LocationID, isOpen from Flats where LocationID={location} and isOpen=true ";
                     querystring2 = " order by State desc;";
                     break;
 
                 default:
-                    querystring1 = "select _key, _val, Price, LocationID from Flats ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from Flats where LocationID={location} and isOpen=true ";
                     querystring2 = ";";
                     break;
             }
 
-            if (price>0) querystring1 += $" where Price<={price} and LocationID={location} " + querystring2;
-            else querystring1 += querystring2;
+            if (price>0) querystring1 += $" and Price<={price} ";
+            querystring1 += querystring2;
             Dictionary<int, Flat> result = new Dictionary<int, Flat>();
             foreach (var row in FlatCache.Query(new SqlFieldsQuery(querystring1)))
             {
@@ -225,34 +225,34 @@ namespace EstateAgency.Database
             switch (order)
             {
                 case "new":
-                    querystring1 = "select _key, _val, PostDate, Price, LocationID from Landplots ";
+                    querystring1 = $"select _key, _val, PostDate, Price, LocationID, isOpen from Landplots where LocationID={location} and isOpen=true ";
                     querystring2 = " order by PostDate desc;";
                     break;
                 case "price":
-                    querystring1 = "select _key, _val, Price, LocationID from Landplots ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from Landplots where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Price;";
                     break;
                 case "prisqm":
-                    querystring1 = "select _key, _val, Price, LandArea, (Price/LandArea) as SqmPrice, LocationID from Landplots ";
+                    querystring1 = $"select _key, _val, Price, LandArea, (Price/LandArea) as SqmPrice, LocationID, isOpen from Landplots where LocationID={location} and isOpen=true ";
                     querystring2 = " order by SqmPrice;";
                     break;
                 case "pop":
-                    querystring1 = "select _key, _val, Price, Cnt, LocationID from Landplots A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from Landplots A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
-                    querystring1 = "select _key, _val, Price, State, LocationID from Landplots ";
+                    querystring1 = $"select _key, _val, Price, State, LocationID, isOpen from Landplots where LocationID={location} and isOpen=true ";
                     querystring2 = " order by State desc;";
                     break;
 
                 default:
-                    querystring1 = "select _key, _val, Price, LocationID from Landplots ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from Landplots where LocationID={location} and isOpen=true ";
                     querystring2 = ";";
                     break;
             }
 
-            if (price>0) querystring1 += $" where Price<={price} and LocationID={location} " + querystring2;
-            else querystring1 += querystring2;
+            if (price>0) querystring1 += $" and Price<={price} ";
+            querystring1 += querystring2;
             Dictionary<int, Landplot> result = new Dictionary<int, Landplot>();
             foreach (var row in LandplotCache.Query(new SqlFieldsQuery(querystring1)))
             {
@@ -274,29 +274,29 @@ namespace EstateAgency.Database
             switch (order)
             {
                 case "new":
-                    querystring1 = "select _key, _val, PostDate, Price, LocationID from EstateObjects ";
+                    querystring1 = $"select _key, _val, PostDate, Price, LocationID, isOpen from EstateObjects where LocationID={location} and isOpen=true ";
                     querystring2 = " order by PostDate desc;";
                     break;
                 case "price":
-                    querystring1 = "select _key, _val, Price, LocationID from EstateObjects ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from EstateObjects where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Price;";
                     break;
                 case "pop":
-                    querystring1 = "select _key, _val, Price, Cnt, LocationID from EstateObjects A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from EstateObjects A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
-                    querystring1 = "select _key, _val, Price, State, LocationID from EstateObjects ";
+                    querystring1 = $"select _key, _val, Price, State, LocationID, isOpen from EstateObjects where LocationID={location} and isOpen=true ";
                     querystring2 = " order by State desc;";
                     break;
 
                 default:
-                    querystring1 = "select _key, _val, Price, LocationID from EstateObjects ";
+                    querystring1 = $"select _key, _val, Price, LocationID, isOpen from EstateObjects where LocationID={location} and isOpen=true ";
                     querystring2 = ";";
                     break;
             }
 
-            if (price>0) querystring1 += $" where Price<={price} and LocationID={location} " + querystring2;
+            if (price>0) querystring1 += $" and Price<={price} " + querystring2;
             else querystring1 += querystring2;
             Dictionary<int, EstateObject> result = new Dictionary<int, EstateObject>();
             foreach (var row in ObjectCache.Query(new SqlFieldsQuery(querystring1)))
@@ -328,6 +328,27 @@ namespace EstateAgency.Database
             foreach (var row in LocationCache.Query(new SqlFieldsQuery($"select _key, District from Locations where Town='{town}';")))
             {
                 result[row[0].ToString()] = row[1] as string;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get bookmarked objects.
+        /// </summary>
+        /// <param name="personid"></param>
+        /// <returns>Key-value pairs of bookmarked objects' short descriptions.</returns>
+        public static Dictionary<int, string> GetBookmarks(int personid)
+        {
+            List<int> idlist = new List<int>();
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            foreach (var row in BookmarkCache.Query(new SqlFieldsQuery($"select ObjectID from Bookmarks where PersonID={personid}")))
+            {
+                idlist.Add ((int)row[0]);
+            }
+            foreach (var entry in ObjectCache.GetAll(idlist))
+            {
+                string description = $"{entry.Value.PostDate} | {entry.Value.Price} USD | {entry.Value.Description.Substring(0, 100)}";
+                result.Add (entry.Key, description);
             }
             return result;
         }
