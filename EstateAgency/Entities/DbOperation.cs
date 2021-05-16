@@ -453,22 +453,18 @@ namespace EstateAgency.Database
         /// <returns>True if object was successfully deleted.</returns>
         public static bool DeleteObject(int key)
         {
-            using (var tx = client.GetTransactions().TxStart())
+            if (DealCache.ContainsKey(key))
             {
-                if (DealCache.ContainsKey(key))
-                {
-                    tx.Commit();
-                    return false;
-                }
-                OrderCache.Query (new SqlFieldsQuery
-                    ($"delete from Orders where ObjectID={key};"));
-                BookmarkCache.Query (new SqlFieldsQuery
-                    ($"delete from Bookmarks where ObjectID={key};"));
-                MatchCache.Query (new SqlFieldsQuery
-                    ($"delete from Matches where ObjectID={key};"));
-                tx.Commit(); 
-                return true;
+                return false;
             }
+            OrderCache.Query (new SqlFieldsQuery
+                ($"delete from Orders where ObjectID={key};"));
+            BookmarkCache.Query (new SqlFieldsQuery
+                ($"delete from Bookmarks where ObjectID={key};"));
+            MatchCache.Query (new SqlFieldsQuery
+                ($"delete from Matches where ObjectID={key};"));
+            ObjectCache.Remove(key);
+            return true;
         }
 
     }

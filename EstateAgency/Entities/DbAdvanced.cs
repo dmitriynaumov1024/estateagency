@@ -139,8 +139,8 @@ namespace EstateAgency.Database
                     querystring2 = " order by SqmPrice;";
                     break;
                 case "pop":
-                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from Houses A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
-                    querystring2 = " order by Cnt desc;";
+                    querystring1 = $"select A._key, A._val, A.Price, B.Cnt, A.LocationID, A.isOpen from \"estateobject\".HOUSES as A left join (select ObjectID, count(PersonID) as Cnt from \"bookmark\".BOOKMARKS group by ObjectID) as B on A._key = B.ObjectID where A.LocationID={location} and A.isOpen=true ";
+                    querystring2 = " order by B.Cnt desc;";
                     break;
                 case "state":
                     querystring1 = $"select _key, _val, Price, LocationID, State, isOpen from Houses where LocationID={location} and isOpen=true ";

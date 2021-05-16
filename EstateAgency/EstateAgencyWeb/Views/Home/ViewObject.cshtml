@@ -151,6 +151,14 @@
                 </td>
             </tr>
         }
+        @if (ViewData["isDeletable"] != null)
+        {
+            <tr>
+                <td colspan="2">
+                    <a href="/DeleteObject?id=@ViewData["ObjectID"]">Видалити?</a>
+                </td>
+            </tr>
+        }
     </table>
     @foreach (string i in (Model as EstateObject).PhotoUrls)
     {<img src="/img/@i" />}

@@ -271,6 +271,8 @@ namespace EstateAgencyWeb.Controllers
                 int? personid = HttpContext.Session.GetInt32("PersonID");
                 if (personid != null) { 
                     ViewData["LoggedIn"]=true;
+                    if((int)personid==h.SellerID)
+                        ViewData["isDeletable"] = true;
                     ViewData["isBookmarked"] = DbClient.BookmarkCache.ContainsKey(((long)personid<<32)+id);
                 }
                 return View("ViewObject", h);
@@ -313,7 +315,29 @@ namespace EstateAgencyWeb.Controllers
 
         public ActionResult DeleteObject(int id)
         {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if(personid==null) 
+                return new UnauthorizedResult();
+            else
+            {
+                EstateObject obj = new EstateObject();
+                if(DbClient.ObjectCache.TryGet(id, out obj))
+                {
+                    if (obj.SellerID != personid)
+                    {
+                        return new UnauthorizedResult();
+                    }
+                    ViewData["objectid"] = id;
+                    return View("DeleteObject");
+                }
+                return new NotFoundResult();
+            }
+        }
+
+        public ActionResult DeleteObjectConfirm(int id)
+        {
             DbClient.DeleteObject(id);
+            return RedirectToAction("Explore");
         }
 
         // --- IDK what is this -----------------------------------------------

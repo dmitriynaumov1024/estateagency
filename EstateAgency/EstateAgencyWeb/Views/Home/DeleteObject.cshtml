@@ -1,10 +1,12 @@
 ﻿@{
+    Layout = "_Basic";
     ViewData["Title"] = "Confirm deletion";
 }
 <h2>Видалення об'єкта</h2>
 <div class="customcard container20em">
     <p>Ви справді бажаєте видалити даний об'єкт нерухомості?</p>
-    <a href="/DeleteObject?id=@ViewData["objectid"]">Так</a>
+    <a href="/DeleteObjectConfirm?id=@ViewData["objectid"]">Так</a>
+    &emsp;&emsp;
     <a href="/ViewObject?id=@ViewData["objectid"]">Ні</a>
 </div>
 
