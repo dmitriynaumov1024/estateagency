@@ -7,10 +7,12 @@
 <form asp-action="Login" asp-controller="Home" method="post" class="customcard container20em" >
     <label>Phone number</label> 
     <input type="tel" name="phone" /> 
-    <br/> 
+
     <label>Password</label> 
     <input type="password" name="password" maxlength="32" /> 
+
     <p style='color: darkred; font-size:80%; font-weight: bold; line-height: 200%;'>@ViewData["ErrorMessage"] &ensp;</p>
+
     <button type="submit">Log in</button>
 </form>
 

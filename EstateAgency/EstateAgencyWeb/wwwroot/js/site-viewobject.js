@@ -2,7 +2,7 @@
     $.ajax({
         type: "POST",
         url: "/ajax/addbookmark",
-        data: { id: objectID },
+        data: { objectid: objectID },
         success: function (data) {
             if (data==true) setBookmarkButton(true);
         }
@@ -13,7 +13,7 @@ function delBookmark() {
     $.ajax({
         type: "POST",
         url: "/ajax/delbookmark",
-        data: { id: objectID },
+        data: { objectid: objectID },
         success: function (data) {
             if (data == true) setBookmarkButton(false);
         }

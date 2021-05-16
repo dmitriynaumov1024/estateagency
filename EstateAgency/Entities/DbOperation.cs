@@ -280,7 +280,7 @@ namespace EstateAgency.Database
                 }
 
                 // Normal operation
-                long key = ((long)value.PersonID)<<32 + value.ObjectID;
+                long key = (((long)value.PersonID)<<32) + value.ObjectID;
                 BookmarkCache.Put (key, value);
                 tx.Commit();
             }
@@ -324,7 +324,7 @@ namespace EstateAgency.Database
                 }
                 
                 // Normal operation
-                long key = ((long)value.WishID)<<32 + value.ObjectID;
+                long key = (((long)value.WishID)<<32) + value.ObjectID;
                 MatchCache.Put (key, value);
                 tx.Commit();
             }
@@ -369,7 +369,7 @@ namespace EstateAgency.Database
                 }
 
                 // Normal operation
-                long key = ((long)value.ClientID)<<32 + value.ObjectID;
+                long key = (((long)value.ClientID)<<32) + value.ObjectID;
                 OrderCache.Put (key, value);
                 tx.Commit();
             }
@@ -445,5 +445,31 @@ namespace EstateAgency.Database
                 tx.Commit();
             }
         }
+
+        /// <summary>
+        /// Delete an estate object.
+        /// </summary>
+        /// <param name="key">Key of object to delete.</param>
+        /// <returns>True if object was successfully deleted.</returns>
+        public static bool DeleteObject(int key)
+        {
+            using (var tx = client.GetTransactions().TxStart())
+            {
+                if (DealCache.ContainsKey(key))
+                {
+                    tx.Commit();
+                    return false;
+                }
+                OrderCache.Query (new SqlFieldsQuery
+                    ($"delete from Orders where ObjectID={key};"));
+                BookmarkCache.Query (new SqlFieldsQuery
+                    ($"delete from Bookmarks where ObjectID={key};"));
+                MatchCache.Query (new SqlFieldsQuery
+                    ($"delete from Matches where ObjectID={key};"));
+                tx.Commit(); 
+                return true;
+            }
+        }
+
     }
 }

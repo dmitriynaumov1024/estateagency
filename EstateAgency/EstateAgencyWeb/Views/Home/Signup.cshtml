@@ -9,20 +9,20 @@
 <form asp-action="Signup" asp-controller="Home" method="post" class="customcard container20em">
     <label>Номер телефону</label>
     <input type="tel" name="phone" />
-    <br />
+
     <label>Пароль</label>
     <input type="text" name="password" maxlength="32" />
-    <br />
+
     <label>Email</label>
     <input type="email" name="email" maxlength="64" />
-    <br />
+
     <label>Ім'я</label>
     <input type="text" name="name" maxlength="32" />
-    <br />
+
     <label>Прізвище</label>
     <input type="text" name="surname" maxlength="32" />
-    <br />
-    <label>Область:</label>
+
+    <label>Область</label>
     <select id="regionselect">
         @foreach (string i in DbAdvanced.Regions)
         {
@@ -30,14 +30,24 @@
         }
     </select>
 
-    <label>Населений пункт:</label>
+    <label>Населений пункт</label>
     <select id="townselect">
     </select>
 
-    <label>Район (необов'язково):</label>
+    <label>Район (необов'язково)</label>
     <select name="location" id="districtselect">
     </select>
 
+    <label>Вулиця</label>
+    <input type="text" name="street" maxlength="40" />
+
+    <label>Номер будинку</label>
+    <input type="text" name="housenumber" maxlength="5" />
+
+    <label>Номер квартири (необов'язково)</label>
+    <input type="text" name="flatnumber" maxlength="4" />
+
+    <br />
     <p style='color: darkred; font-size:80%; font-weight: bold; line-height: 200%;'>@ViewData["ErrorMessage"] &ensp;</p>
-    <button type="submit">Proceed</button>
+    <button type="submit">Продовжити</button>
 </form>

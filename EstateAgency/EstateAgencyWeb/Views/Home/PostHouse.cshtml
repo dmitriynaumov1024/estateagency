@@ -7,7 +7,7 @@
 }
 
 <h2>New house</h2>
-<form asp-action="Post_Stage2" method="post">
+<form asp-action="Post_Stage2" method="post" class="customcard container20em" enctype="multipart/form-data">
     <input type="hidden" name="location" value="@ViewData["location"]" />
     <input type="hidden" name="variant" value="@ViewData["variant"]" />
 
@@ -30,14 +30,18 @@
     <input name="roomcount" type="text" maxlength="2" style="width: 8em;" />
 
     <label>Опис об'єкта:</label>
-    <textarea name="description"></textarea>
+    <textarea name="description" style="resize:none; height: 10em;"></textarea>
 
-    <span>Ціна:</span>
-    <input type="text" maxlength="7" name="price" style="display: inline; width: 8em;" />
+    <label>Ціна:</label>
+    <input type="text" maxlength="7" name="price" style="width: 8em;" />
 
     <label>Теги:</label>
-    <textarea name="tags" placeholder="Enter tags here, ex.: water, gas, electricity"></textarea>
+    <textarea name="tags" placeholder="Enter tags here, ex.: water, gas, electricity" style="resize:none;"></textarea>
+
+    <label>Фото:</label>
+    <input name="photos" type="file" accept="image/*" multiple required />
     <br/>
+    <p style="color:darkred; font-weight:bold;">@ViewData["ErrorMessage"] &ensp;</p>
     <br/>
     <button type="submit">Завершити</button>
 </form>

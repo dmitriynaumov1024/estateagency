@@ -2,6 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 * {
     font-family: 'Segoe UI', sans-serif;
+    word-break: break-word;
 }
 
 a.navbar-brand {
@@ -134,5 +135,4 @@ button {
 
 .container20em {
     width: 20em;
-    margin:auto;
 }

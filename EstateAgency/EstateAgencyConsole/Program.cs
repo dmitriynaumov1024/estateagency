@@ -17,7 +17,15 @@ namespace EstateAgencyConsole
         /// Main entry point for application. The main task 
         /// of the program is to create database of Estate agency.
         /// </summary>
+        /*
+        static void Main() { 
+            DbClient.Connect();
+            DbClient.SetClusterActive(true);
+            DbClient.CreateDatabase();
+        }
+        */
 
+        
         static void Main ()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -112,10 +120,9 @@ namespace EstateAgencyConsole
                 }
                 Console.WriteLine("-----------------------------------------------------------");
             } while (c!='~');
-            
+            DbClient.Disconnect();
             Console.WriteLine("[Done. Press ENTER to continue.]");
             Console.Read();
-            DbClient.Disconnect();
         }
     }
 }

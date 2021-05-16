@@ -4,11 +4,19 @@
     ViewData["script"]="site-bookmarks.js";
 }
 
-@foreach(var pair in Model as Dictionary<int, string>)
+<h2>Закладки<br/><br/></h2>
+
+@if((Model as Dictionary<int, string>).Count == 0) { 
+    <p style="text-align:center">
+        Нічого не знайдено.
+    </p>
+}
+
+@foreach (var pair in Model as Dictionary<int, string>)
 {
     <div class="container20em customcard">
         <p style="text-align:justify;">@pair.Value</p>
-        <br/>
+        <br />
         <a href="/ViewObject?id=@(pair.Key)">Детальніше &gt;&gt;</a>
     </div>
 }

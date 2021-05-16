@@ -347,8 +347,9 @@ namespace EstateAgency.Database
             }
             foreach (var entry in ObjectCache.GetAll(idlist))
             {
-                string description = $"{entry.Value.PostDate} | {entry.Value.Price} USD | {entry.Value.Description.Substring(0, 100)}";
-                result.Add (entry.Key, description);
+                var obj = entry.Value;
+                if (obj.Description.Length>200) obj.Description = obj.Description.Substring(0, 180);
+                result.Add (entry.Key, $"{obj.PostDate.ToLocalTime()} | {obj.Price} USD | {obj.Description}");
             }
             return result;
         }

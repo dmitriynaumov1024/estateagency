@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"]="Account";
+    Layout="_Basic";
+}
+<h2>Мій обліковий запис</h2>
+<div class="customcard container20em">
+    <table>
+        <tr>
+            <td>Прізвище</td>
+            <td>@Model.Surname</td>
+        </tr>
+        <tr>
+            <td>Ім'я</td>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
+            <td>Телефон</td>
+            <td>@Model.Phone</td>
+        </tr>
+        <tr>
+            <td>E-mail</td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>Адреса </td>
+            <td>@ViewData["Location"]</td>
+        </tr>
+    </table>
+    <br />
+    <a href="/Logout">Вийти</a>
+</div>

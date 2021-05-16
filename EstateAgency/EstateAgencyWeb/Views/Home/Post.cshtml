@@ -8,7 +8,7 @@
 }
 
 <h2>New object</h2>
-<form asp-action="Post_Stage1" method="get">
+<form asp-action="Post_Stage1" method="get" class="customcard container20em">
     <label>Область:</label>
     <select id="regionselect">
         @foreach (string i in DbAdvanced.Regions)
@@ -32,5 +32,7 @@
         <option value="l">Земельна ділянка</option>
         <option value="o">Інше</option>
     </select>
+    <br />
+    <br />
     <button type="submit">Продовжити</button>
 </form>

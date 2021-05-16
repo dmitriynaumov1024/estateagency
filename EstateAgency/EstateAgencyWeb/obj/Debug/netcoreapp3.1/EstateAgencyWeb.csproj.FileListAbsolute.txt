@@ -47,3 +47,5 @@ E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razo
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\PostLandplot.cshtml.g.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\PostObject.cshtml.g.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\ViewObject.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Bookmarks.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Account.cshtml.g.cs

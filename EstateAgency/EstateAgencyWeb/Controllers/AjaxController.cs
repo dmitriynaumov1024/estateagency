@@ -29,11 +29,13 @@ namespace EstateAgencyWeb.Controllers
             if(personid==null) return false;
             try 
             { 
+                Console.WriteLine($"Person {personid}, Object {objectid}");
                 DbClient.PutBookmark (new EstateAgency.Entities.Bookmark { ObjectID = objectid, PersonID = (int)personid });
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
@@ -45,7 +47,7 @@ namespace EstateAgencyWeb.Controllers
             if(personid==null) return false;
             try 
             { 
-                return DbClient.BookmarkCache.Remove((long)personid<<32+objectid);
+                return DbClient.BookmarkCache.Remove(((long)personid<<32)+objectid);
             }
             catch (Exception)
             {

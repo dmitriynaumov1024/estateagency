@@ -139,17 +139,19 @@
         </tr>
 
         @* Bookmarks, a holy piece of shit *@
-        @if(ViewData["isBookmarked"]!=null) 
-        { 
-        <tr>
-            <td colspan="2">
-                <button id="bookmark"></button>
-                <script>
+        @if (ViewData["isBookmarked"] != null)
+        {
+            <tr>
+                <td colspan="2">
+                    <button id="bookmark"></button>
+                    <script>
                     var currentObjectBookmark = @((bool)ViewData["isBookmarked"]?"true":"false");
                     var objectID = @ViewData["ObjectID"];
-                </script>
-            </td>
-        </tr>
+                    </script>
+                </td>
+            </tr>
         }
     </table>
+    @foreach (string i in (Model as EstateObject).PhotoUrls)
+    {<img src="/img/@i" />}
 </div>

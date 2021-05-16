@@ -10,6 +10,7 @@ using EstateAgency.Entities;
 using EstateAgency.Database;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
+using System.IO;
 
 
 namespace EstateAgencyWeb.Controllers
@@ -50,6 +51,7 @@ namespace EstateAgencyWeb.Controllers
                     Credential cr = DbClient.CredentialCache.Get(phone);
                     HttpContext.Session.SetInt32("PersonID", cr.PersonID);
                     HttpContext.Session.SetString("Privilegies", ((char)cr.Privilegies).ToString());
+                    ViewData["LoggedIn"]=true;
                     return RedirectToAction ("Explore");
                 
                 case 'p':
@@ -76,18 +78,35 @@ namespace EstateAgencyWeb.Controllers
             return View("Login");
         }
 
-        [HttpGet]
-        public ActionResult Signup()
+        [HttpGet("/Signup")]
+        public ActionResult SignupGet()
         {
             return View("Signup");
         }
 
-        [HttpPost]
-        public ActionResult Signup(string phone, string password, string email, string name, string surname, int location)
+        [HttpPost("/Signup")]
+        public ActionResult Signup()
         {
+            Person p = new Person{ 
+                Phone = Request.Form["phone"],
+                Email = Request.Form["email"],
+                Name = Request.Form["name"], 
+                Surname = Request.Form["surname"], 
+                LocationID = int.Parse(Request.Form["location"]), 
+                StreetName = Request.Form["street"],
+                HouseNumber = Request.Form["housenumber"],
+                FlatNumber = short.Parse(Request.Form["flatnumber"]),
+                RegDate = DateTime.UtcNow 
+            };
+            var v = p.Validate;
+            if(!v.isValid) 
+            { 
+                ViewData["ErrorMessage"] = v.Message;
+                return View ("Signup");
+            }
             try 
             {
-                DbAdvanced.CreateAccount(new Person { Phone = phone, Name = name, Surname = surname, LocationID = location, RegDate = DateTime.UtcNow }, password);
+                DbAdvanced.CreateAccount(p, Request.Form["password"]);
                 ViewData["ErrorMessage"] = "You have successfully created an account. Now log in.";
                 return View("Login");
             }
@@ -98,18 +117,9 @@ namespace EstateAgencyWeb.Controllers
             }
         }
 
-        /*
-        public ActionResult Explore()
-        {
-            Dictionary<int, EstateObject> result;
-            result = DbAdvanced.GetEstateObjects();
-
-            return View ("Explore", result);
-        }
-        */
-
         public ActionResult Explore(int district, string variant, string order, int maxprice)
         {
+            if(HttpContext.Session.GetInt32("PersonID")!=null) ViewData["LoggedIn"]=true;
             if (variant == null)
             {
                 return View ("Explore", DbAdvanced.GetEstateObjects());
@@ -140,6 +150,9 @@ namespace EstateAgencyWeb.Controllers
         [HttpGet("/Post")]
         public ActionResult Post_Stage1(int district=-1, string variant="")
         {
+            if(HttpContext.Session.GetInt32("PersonID")==null)
+                return new UnauthorizedResult();
+
             if (district == -1)
             {
                 return View ("Post");
@@ -163,16 +176,20 @@ namespace EstateAgencyWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post_Stage2(int location, string variant = "")
+        public ActionResult Post_Stage2()
         {
+            if(HttpContext.Session.GetInt32("PersonID")==null)
+                return new UnauthorizedResult();
+            else 
+                ViewData["LoggedIn"]=true;
             
-            switch (variant)
+            switch (Request.Form["variant"])
             {
                 case "h":
                     House h = new House
                     {
                         PostDate = DateTime.UtcNow,
-                        LocationID = location,
+                        LocationID = int.Parse(Request.Form["location"]),
                         Variant = (byte)'h',
                         StreetName = Request.Form["streetname"],
                         HouseNumber = Request.Form["housenumber"],
@@ -192,9 +209,31 @@ namespace EstateAgencyWeb.Controllers
                     if (!v.isValid && v.FieldName!="PhotoUrls") // wheelchair
                     {
                         ViewData["ErrorMessage"] = v.Message;
+                        return View ("PostHouse", h);
                     }
                     else
                     {
+                        h.PhotoUrls = new List<string>();
+                        var photos = Request.Form.Files.ToList();
+                        if (photos.Count < 1)
+                        {
+                            ViewData["ErrorMessage"]="There were no photos.";
+                            return View("PostHouse");
+                        }
+                        for (int i=0; i<photos.Count & i<10; i++)
+                        {
+                            if (photos[i].Length < (2 * 1024 * 1024))
+                            { 
+                                string ext = photos[i].ContentType.Split('/')[1];
+                                string filename = $"{h.PostDate.ToBinary():X}_{i}.{ext}";
+                                Console.WriteLine ("File name: "+filename);
+                                h.PhotoUrls.Add(filename);
+                                using (FileStream s = new FileStream($"wwwroot/img/{filename}", FileMode.OpenOrCreate))
+                                {
+                                    photos[i].CopyTo (s);
+                                }
+                            }
+                        }
                         try 
                         {
                             DbClient.PutEstateObject(h); 
@@ -203,6 +242,9 @@ namespace EstateAgencyWeb.Controllers
                         catch (ReferentialException ee)
                         {
                             ViewData["ErrorMessage"] = ee.ReadableMessage;
+                            ViewData["location"] = Request.Form["location"];
+                            ViewData["variant"] = "h";
+                            return View ("PostHouse");
                         }
                     }
                     return View ("ViewObject", h);
@@ -227,8 +269,10 @@ namespace EstateAgencyWeb.Controllers
                 ViewData["LocationFull"] = l.Region + " область, " + l.Town + ((l.District.Length > 0) ? (", " + l.District + " район") : "");
                 ViewData["Seller"] = $"{p.Name} {p.Surname}, тел. {p.Phone}";
                 int? personid = HttpContext.Session.GetInt32("PersonID");
-                if (personid!=null)
-                    ViewData["isBookmarked"] = DbClient.BookmarkCache.ContainsKey((long)personid<<32+id);
+                if (personid != null) { 
+                    ViewData["LoggedIn"]=true;
+                    ViewData["isBookmarked"] = DbClient.BookmarkCache.ContainsKey(((long)personid<<32)+id);
+                }
                 return View("ViewObject", h);
             }
             return new NotFoundResult();
@@ -240,6 +284,36 @@ namespace EstateAgencyWeb.Controllers
             int? personid = HttpContext.Session.GetInt32("PersonID");
             if (personid==null)
                 return new UnauthorizedResult();
+
+            ViewData["LoggedIn"]=true;
+            Dictionary<int,string> d = DbAdvanced.GetBookmarks((int)personid);
+            return View ("Bookmarks", d);
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Account()
+        {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if(personid==null) return new UnauthorizedResult();
+            ViewData["LoggedIn"]=true;
+            Person p; 
+            if(DbClient.PersonCache.TryGet((int)personid, out p)) 
+            {
+                Location l = DbClient.LocationCache.Get(p.LocationID);
+                ViewData["Location"] = $"{l.Region} область, {l.Town}, {(l.District.Length<2? l.District + " район, ": "")} {p.StreetName}, {p.HouseNumber}{(p.FlatNumber>0? ", кв. " + p.FlatNumber.ToString(): "")}";
+                return View("Account", p);
+            }
+            else return new UnauthorizedResult();
+        }
+
+        public ActionResult DeleteObject(int id)
+        {
+            DbClient.DeleteObject(id);
         }
 
         // --- IDK what is this -----------------------------------------------

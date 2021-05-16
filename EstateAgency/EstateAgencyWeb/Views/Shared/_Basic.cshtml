@@ -7,8 +7,17 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body onload="page_main()">
-    <header>
+    @if (ViewData["LoggedIn"]!=null){ 
+    <header style="position:sticky;">
+        <a href="/Explore">Головна</a> 
+        &emsp;/&emsp;
+        <a href="/Bookmarks">Закладки</a> 
+        &emsp;/&emsp;
+        <a href="/Account">Обліковий запис</a> 
+        &emsp;/&emsp;
     </header>
+    }
+
     <main role="main">
         @RenderBody()
     </main>
