@@ -188,7 +188,7 @@ namespace EstateAgency.Database
                     querystring2 = " order by SqmPrice;";
                     break;
                 case "pop":
-                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from Flats A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from \"estateobject\".Flats as A left join (select ObjectID, count(PersonID) as Cnt from \"bookmark\".Bookmarks group by ObjectID) as B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
@@ -237,7 +237,7 @@ namespace EstateAgency.Database
                     querystring2 = " order by SqmPrice;";
                     break;
                 case "pop":
-                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from Landplots A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from \"estateobject\".Landplots as A left join (select ObjectID, count(*) as Cnt from \"bookmark\".Bookmarks group by ObjectID) as B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
@@ -282,7 +282,7 @@ namespace EstateAgency.Database
                     querystring2 = " order by Price;";
                     break;
                 case "pop":
-                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from EstateObjects A join (select ObjectID, count(*) as Cnt from Bookmarks group by ObjectID) B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
+                    querystring1 = $"select _key, _val, Price, Cnt, LocationID, isOpen from \"estateobject\".EstateObjects as A left join (select ObjectID, count(*) as Cnt from \"bookmark\".Bookmarks group by ObjectID) as B on A._key = B.ObjectID where LocationID={location} and isOpen=true ";
                     querystring2 = " order by Cnt desc;";
                     break;
                 case "state":
