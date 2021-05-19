@@ -30,7 +30,10 @@ namespace EstateAgency.Database
         public static void Connect()
         {
             client = Ignition.StartClient (new IgniteClientConfiguration 
-                {Endpoints = new[] {"127.0.0.1:10800"}}
+                {
+                    Endpoints = new[] {"127.0.0.1:10800"},
+                    BinaryConfiguration = new Apache.Ignite.Core.Binary.BinaryConfiguration (typeof(Entities.Matcher), typeof(Int32)),
+                }
             );
         }
 

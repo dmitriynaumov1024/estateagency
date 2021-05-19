@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EstateAgency.Entities;
+@using EstateAgency.Database;
+
 @{
+    Layout = "_Basic";
+    ViewData["Title"] = "New object";
 }
+
+<h2>New object</h2>
+<form asp-action="Post_Stage2" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="location" value="@ViewData["location"]" />
+    <input type="hidden" name="variant" value="@ViewData["variant"]" />
+    <label>Опис об'єкта:</label>
+    <textarea name="description"></textarea>
+
+    <label>Назва вулиці:</label>
+    <input name="streetname" type="text" maxlength="64" placeholder="Приклад: проспект Соборний" />
+
+    <label>Номер будинку:</label>
+    <input name="housenumber" type="text" maxlength="5" style="width: 8em;" />
+
+    <label>Площа земельної ділянки, а:</label>
+    <input name="landarea" type="text" maxlength="7" style="width: 8em;" />
+
+    <label>Стан [0..5]:</label>
+    <input name="state" type="text" maxlength="1" style="width: 8em;" />
+
+    <span>Ціна, USD:</span>
+    <input type="text" maxlength="7" name="price" style="display: inline; width: 8em;" />
+
+    <label>Теги:</label>
+    <textarea name="tags" placeholder="Enter tags here, ex.: water gas electricity"></textarea>
+
+    <label>Фото:</label>
+    <input name="photos" type="file" accept="image/*" multiple required />
+
+    <br />
+    <p style="color:darkred; font-weight:bold;">@ViewData["ErrorMessage"] &ensp;</p>
+    <br />
+
+    <button type="submit">Завершити</button>
+</form>

@@ -1,0 +1,42 @@
+﻿@using EstateAgency.Entities;
+@{
+    Layout = "_Basic";
+    ViewData["Title"] = "My wishes";
+}
+
+<h2>Список бажань<br /><br /></h2>
+
+@if ((Model as Dictionary<int, ClientWish>).Count == 0)
+{
+    <p style="text-align:center">
+        Нічого не знайдено.
+    </p>
+}
+
+@foreach (var pair in Model as Dictionary<int, ClientWish>)
+{
+    <div class="container20em customcard">
+        <p style="text-align:justify;">Опубліковано @pair.Value.PostDate.ToLocalTime()</p>
+        <p>ID локації: @pair.Value.LocationID</p>
+        <p>Варіант: 
+        @switch ((char)(pair.Value.Variant))
+        {
+            case 'h': <b>будинок</b> break;
+            case 'f': <b>квартира</b> break;
+            case 'l': <b>земельна ділянка</b> break;
+            default : <b>інше</b> break;
+        }
+        </p>
+        <p>Максимальна ціна: @pair.Value.Price USD</p>
+        <p>Теги:</p>
+        <ul>
+        @foreach (string i in pair.Value.Tags)
+        {
+            <li>@i</li>
+        }
+        </ul>
+        <p>Необхідний стан: @pair.Value.NeededState</p>
+        <a href="/FindMatches?wishid=@(pair.Key)">Знайти співпадіння &gt;&gt;</a>
+    </div>
+}
+<a href="/CreateWish" class="plusbutton">+</a>

@@ -182,11 +182,12 @@ namespace EstateAgencyWeb.Controllers
                 return new UnauthorizedResult();
             else 
                 ViewData["LoggedIn"]=true;
-            
-            switch (Request.Form["variant"])
+            EstateObject h;
+            string variant = Request.Form["variant"];
+            switch (variant)
             {
                 case "h":
-                    House h = new House
+                    h = new House
                     {
                         PostDate = DateTime.UtcNow,
                         LocationID = int.Parse(Request.Form["location"]),
@@ -200,61 +201,127 @@ namespace EstateAgencyWeb.Controllers
                         LandArea = float.Parse(Request.Form["landarea"]),
                         FloorCount = short.Parse(Request.Form["floorcount"]),
                         RoomCount = short.Parse(Request.Form["roomcount"]),
-                        isVisible = false,
+                        State = byte.Parse(Request.Form["state"]),
+                        isVisible = true,
                         isOpen = true
                     };
-                    string t = Request.Form["tags"];
-                    h.Tags = t.Split(' ');
-                    var v = h.Validate;
-                    if (!v.isValid && v.FieldName!="PhotoUrls") // wheelchair
-                    {
-                        ViewData["ErrorMessage"] = v.Message;
-                        return View ("PostHouse", h);
-                    }
-                    else
-                    {
-                        h.PhotoUrls = new List<string>();
-                        var photos = Request.Form.Files.ToList();
-                        if (photos.Count < 1)
-                        {
-                            ViewData["ErrorMessage"]="There were no photos.";
-                            return View("PostHouse");
-                        }
-                        for (int i=0; i<photos.Count & i<10; i++)
-                        {
-                            if (photos[i].Length < (2 * 1024 * 1024))
-                            { 
-                                string ext = photos[i].ContentType.Split('/')[1];
-                                string filename = $"{h.PostDate.ToBinary():X}_{i}.{ext}";
-                                Console.WriteLine ("File name: "+filename);
-                                h.PhotoUrls.Add(filename);
-                                using (FileStream s = new FileStream($"wwwroot/img/{filename}", FileMode.OpenOrCreate))
-                                {
-                                    photos[i].CopyTo (s);
-                                }
-                            }
-                        }
-                        try 
-                        {
-                            DbClient.PutEstateObject(h); 
-                            ViewData["ErrorMessage"] = "";
-                        } 
-                        catch (ReferentialException ee)
-                        {
-                            ViewData["ErrorMessage"] = ee.ReadableMessage;
-                            ViewData["location"] = Request.Form["location"];
-                            ViewData["variant"] = "h";
-                            return View ("PostHouse");
-                        }
-                    }
-                    return View ("ViewObject", h);
+                    break;
+
                 case "f":
-                    return View ("PostFlat");
-                case "l":
-                    return View ("PostLandplot");
+                    h = new Flat
+                    {
+                        PostDate = DateTime.UtcNow,
+                        LocationID = int.Parse(Request.Form["location"]),
+                        Variant = (byte)'h',
+                        StreetName = Request.Form["streetname"],
+                        HouseNumber = Request.Form["housenumber"],
+                        FlatNumber = short.Parse(Request.Form["flatnumber"]),
+                        Description = Request.Form["description"],
+                        SellerID = (int)HttpContext.Session.GetInt32("PersonID"),
+                        Price = int.Parse(Request.Form["price"]),
+                        HomeArea = float.Parse(Request.Form["homearea"]),
+                        Floor = short.Parse(Request.Form["floor"]),
+                        RoomCount = short.Parse(Request.Form["roomcount"]),
+                        State = byte.Parse(Request.Form["state"]),
+                        isVisible = true,
+                        isOpen = true
+                    };
+                    break;
+
+                case "l": 
+                    h = new Landplot
+                    {
+                        PostDate = DateTime.UtcNow,
+                        LocationID = int.Parse(Request.Form["location"]),
+                        Variant = (byte)'h',
+                        StreetName = Request.Form["streetname"],
+                        HouseNumber = Request.Form["housenumber"],
+                        Description = Request.Form["description"],
+                        SellerID = (int)HttpContext.Session.GetInt32("PersonID"),
+                        Price = int.Parse(Request.Form["price"]),
+                        LandArea = float.Parse(Request.Form["landarea"]),
+                        State = byte.Parse(Request.Form["state"]),
+                        isVisible = true,
+                        isOpen = true
+                    };
+                    break;
+
                 default:
-                    return View ("PostObject");
+                    h = new EstateObject
+                    {
+                        PostDate = DateTime.UtcNow,
+                        LocationID = int.Parse(Request.Form["location"]),
+                        Variant = (byte)'h',
+                        StreetName = Request.Form["streetname"],
+                        HouseNumber = Request.Form["housenumber"],
+                        Description = Request.Form["description"],
+                        SellerID = (int)HttpContext.Session.GetInt32("PersonID"),
+                        Price = int.Parse(Request.Form["price"]),
+                        State = byte.Parse(Request.Form["state"]),
+                        isVisible = true,
+                        isOpen = true
+                    };
+                    break;
             }
+
+            string t = Request.Form["tags"];
+            h.Tags = t.Split(' ');
+            var v = h.Validate;
+            if (!v.isValid && v.FieldName!="PhotoUrls") // wheelchair
+            {
+                ViewData["ErrorMessage"] = v.Message;
+                return View ("PostHouse", h);
+            }
+            else
+            {
+                h.PhotoUrls = new List<string>();
+                var photos = Request.Form.Files.ToList();
+                if (photos.Count < 1)
+                {
+                    ViewData["ErrorMessage"]="There were no photos.";
+                    if (variant=="h")
+                        return View ("PostHouse");
+                    else if (variant=="f")
+                        return View ("PostFlat");
+                    else if (variant=="l")
+                        return View ("PostLandplot");
+                    else 
+                        return View ("PostObject");
+                }
+                for (int i=0; i<photos.Count & i<10; i++)
+                {
+                    if (photos[i].Length < (2 * 1024 * 1024))
+                    { 
+                        string ext = photos[i].ContentType.Split('/')[1];
+                        string filename = $"{h.PostDate.ToBinary():X}_{i}.{ext}";
+                        Console.WriteLine ("File name: "+filename);
+                        h.PhotoUrls.Add(filename);
+                        using (FileStream s = new FileStream($"wwwroot/img/{filename}", FileMode.OpenOrCreate))
+                        {
+                            photos[i].CopyTo (s);
+                        }
+                    }
+                }
+                try 
+                {
+                    DbClient.PutEstateObject(h); 
+                } 
+                catch (ReferentialException ee)
+                {
+                    ViewData["ErrorMessage"] = ee.ReadableMessage;
+                    ViewData["location"] = Request.Form["location"];
+                    ViewData["variant"] = "h";
+                    if (variant=="h")
+                        return View ("PostHouse");
+                    else if (variant=="f")
+                        return View ("PostFlat");
+                    else if (variant=="l")
+                        return View ("PostLandplot");
+                    else 
+                        return View ("PostObject");
+                }
+            }
+            return View ("ViewObject", h);
         }
 
         [HttpGet]
@@ -332,6 +399,76 @@ namespace EstateAgencyWeb.Controllers
                 }
                 return new NotFoundResult();
             }
+        }
+
+        [HttpGet("/CreateWish")]
+        public ActionResult CreateWishGet()
+        {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if (personid==null)
+                return new UnauthorizedResult();
+            return View ("CreateWish");
+        }
+
+        [HttpPost("/CreateWish")]
+        public ActionResult CreateWish()
+        {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if (personid==null)
+                return new UnauthorizedResult();
+            ClientWish wish = new ClientWish
+            {
+                ClientID = (int)personid,
+                isOpen = true,
+                PostDate = DateTime.UtcNow,
+                LocationID = int.Parse(Request.Form["location"]),
+                Variant = (byte)(((string)Request.Form["variant"])[0]),
+                Price = int.Parse(Request.Form["price"]),
+                NeededState = byte.Parse (Request.Form["state"])
+            };
+            string t = Request.Form["tags"];
+            wish.Tags = t.Split(new[]{' '}, 10);
+            var v = wish.Validate;
+            if (v.isValid)
+            {
+                try
+                {
+                    DbClient.PutClientWish(wish);
+                    return RedirectToAction ("Wishes");
+                }
+                catch (ReferentialException e)
+                {
+                    ViewData["ErrorMessage"] = e.ReadableMessage;
+                    return View ("CreateWish");
+                }
+            }
+            ViewData["ErrorMessage"] = v.Message;
+            return View ("CreateWish");
+        }
+
+        public ActionResult Wishes()
+        {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if (personid==null)
+                return new UnauthorizedResult();
+            Dictionary<int, ClientWish> wishes = DbAdvanced.GetWishesByPerson((int)personid);
+            return View ("Wishes", wishes);
+        }
+
+        public ActionResult FindMatches(int wishid)
+        {
+            int? personid = HttpContext.Session.GetInt32("PersonID");
+            if (personid==null)
+                return new UnauthorizedResult();
+
+            ClientWish wish; 
+            if (DbClient.ClientWishCache.TryGet(wishid, out wish)) 
+            { 
+                Dictionary<int, EstateObject> objects = DbAdvanced.FindMatches(wish, 10);
+                ViewData["DisableFilter"]=true;
+                return View ("Explore", objects);
+            }
+            else return new NotFoundResult();
         }
 
         public ActionResult DeleteObjectConfirm(int id)

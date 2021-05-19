@@ -354,6 +354,40 @@ namespace EstateAgency.Database
             return result;
         }
 
+        public static IList<IList<object>> GetHouses (int location, int maxprice)
+        {
+            string query = $"select _key, Price, LocationID, PostDate, Description from \"estateobject\".Houses where LocationID={location} and Price<={maxprice} order by PostDate desc;";
+            return ObjectCache.Query(new SqlFieldsQuery(query)).GetAll();
+        }
+
+        public static Dictionary<int, EstateObject> FindMatches (ClientWish wish, int limit)
+        {
+            Dictionary<int, EstateObject> result = new Dictionary<int, EstateObject>();
+            string objectvariant;
+            switch ((char)(wish.Variant))
+            {
+                case 'h': objectvariant = "Houses"; break;
+                case 'f': objectvariant = "Flats"; break;
+                case 'l': objectvariant = "Landplots"; break;
+                default : objectvariant = "EstateObjects"; break;
+            }
+            string query = $"select _key, _val, LocationID, Price, State from \"estateobject\".{objectvariant} where LocationID={wish.LocationID} and Price<={wish.Price} and State>={wish.NeededState} limit {limit};";
+            foreach(var row in ObjectCache.Query(new SqlFieldsQuery(query))){
+                result [(int)row[0]] = (EstateObject)(row[1]);
+            }
+            return result;
+        }
+
+        public static Dictionary<int, ClientWish> GetWishesByPerson (int id)
+        {
+            Dictionary<int, ClientWish> result = new Dictionary<int, ClientWish>();
+            foreach(var row in ClientWishCache.Query(new SqlFieldsQuery($"select _key, _val, ClientID from ClientWishes where ClientID={id};")))
+            {
+                result[(int)(row[0])] = (ClientWish)(row[1]);
+            }
+            return result;
+        }
+
         public static string[] Regions =
         {
             "Вінницька",

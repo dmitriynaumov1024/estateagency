@@ -1,0 +1,46 @@
+select
+    _key,
+    _val,
+    Price,
+    LocationID,
+    PostDate
+from 
+    "estateobject".Houses
+where
+    LocationID=0 and 
+    Price<10000 and 
+    isOpen=true
+order by 
+    PostDate desc,
+    Price;
+
+
+select
+    A._key,
+    Price,
+    Region, 
+    Town, 
+    District,
+    Description
+from 
+(
+    select 
+        _key, 
+        Price, 
+        LocationID, 
+        left (Description, 60) as Description
+    from 
+        (
+            select 
+                ObjectID, 
+                PersonID 
+            from "bookmark".Bookmarks
+            where PersonID=0
+        ) as B
+        join 
+        "estateobject".Houses as H
+    on B.ObjectID=H._key
+) as A
+join
+    "location".Locations as L
+on A.LocationID=L._key;

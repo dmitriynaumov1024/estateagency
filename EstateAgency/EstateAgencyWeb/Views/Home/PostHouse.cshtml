@@ -17,10 +17,10 @@
     <label>Номер будинку:</label>
     <input name="housenumber" type="text" maxlength="5" style="width: 8em;" />
 
-    <label>Площа земельної ділянки:</label>
+    <label>Площа земельної ділянки, а:</label>
     <input name="landarea" type="text" maxlength="7" style="width: 8em;" />
 
-    <label>Площа будинку:</label>
+    <label>Площа будинку, кв.м:</label>
     <input name="homearea" type="text" maxlength="7" style="width: 8em;" />
 
     <label>Кількість поверхів:</label>
@@ -35,13 +35,16 @@
     <label>Ціна:</label>
     <input type="text" maxlength="7" name="price" style="width: 8em;" />
 
+    <label>Стан [0..5]:</label>
+    <input name="state" type="text" maxlength="1" style="width: 8em;" />
+
     <label>Теги:</label>
-    <textarea name="tags" placeholder="Enter tags here, ex.: water, gas, electricity" style="resize:none;"></textarea>
+    <textarea name="tags" placeholder="Enter tags here, ex.: water, gas, electricity"></textarea>
 
     <label>Фото:</label>
     <input name="photos" type="file" accept="image/*" multiple required />
-    <br/>
+    <br />
     <p style="color:darkred; font-weight:bold;">@ViewData["ErrorMessage"] &ensp;</p>
-    <br/>
+    <br />
     <button type="submit">Завершити</button>
 </form>

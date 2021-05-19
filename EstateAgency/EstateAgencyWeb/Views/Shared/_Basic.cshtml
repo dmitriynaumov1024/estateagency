@@ -8,13 +8,15 @@
 </head>
 <body onload="page_main()">
     @if (ViewData["LoggedIn"]!=null){ 
-    <header style="position:sticky;">
+    <header>
         <a href="/Explore">Головна</a>
-        &emsp;/&emsp;
+        &emsp;|&emsp;
         <a href="/Bookmarks">Закладки</a>
-        &emsp;/&emsp;
+        &emsp;|&emsp;
+        <a href="/Wishes">Список бажань</a>
+        &emsp;|&emsp;
         <a href="/Account">Обліковий запис</a>
-        &emsp;/&emsp;
+        &emsp;|&emsp;
         <a href="/Post">+ Об'єкт</a>
     </header>
     }
@@ -23,7 +25,7 @@
         @RenderBody()
     </main>
 
-    <footer class="footer container60">
+    <footer class="footer">
         <div>
             &copy; 2021 - EstateAgencyWeb - Dmitriy Naumov - naumov1024@gmail.com
         </div>

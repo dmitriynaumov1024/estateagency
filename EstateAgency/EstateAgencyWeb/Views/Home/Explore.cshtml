@@ -7,6 +7,7 @@
     ViewData["script"] = "site-explore.js";
 }
 
+@if (ViewData["DisableFilter"] == null) { 
 <form class="customcard" asp-action="Explore" method="get">
     <p>Фільтр</p>
     <div style="width: 40%; min-width: 24em;">
@@ -51,10 +52,11 @@
         <button type="submit">Застосувати фільтр</button>
     </div>
 </form>
+}
 
 <h2>Доступні об'єкти нерухомості</h2>
 @{
-    if((Model as Dictionary<int, EstateObject>).Count==0) { <p style="margin-top:10em;">Нічого не знайдено.</p>}
+    if((Model as Dictionary<int, EstateObject>).Count==0) { <p style="margin:6em auto 6em; text-align:center;">Нічого не знайдено.</p>}
     foreach (KeyValuePair<int, EstateObject> pair in Model as Dictionary<int, EstateObject>)
     {
         EstateObject i = pair.Value;

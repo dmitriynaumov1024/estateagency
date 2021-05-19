@@ -11,9 +11,21 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
+header {
+    background-color: white;
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0px;
+    padding: 1em 2em 1.25em;
+    border-bottom: 1px solid #cccccc;
+    text-decoration: none !important;
+    color: #111111 !important;
+}
+
 a {
-  color: #0366d6;
+    text-decoration: none !important;
+    color: #111111 !important;
+    font-weight: bold;
 }
 
 .btn-primary {
@@ -54,8 +66,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  
+  margin: 0 0 70px;
 }
 
 main {
@@ -95,6 +106,7 @@ input[type=text], input[type=password], input[type=email], input[type=tel], inpu
 
 select {
     width: 100%;
+    max-width:100%;
 }
 
 label {
@@ -106,6 +118,7 @@ label {
 
 textarea {
     width: 100%;
+    resize:none;
 }
 
 button {
@@ -126,6 +139,7 @@ button {
 .footer {
   position: absolute;
   bottom: 0;
+  padding: 0 2em 0;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
@@ -137,4 +151,17 @@ button {
 
 .container20em {
     width: 20em;
+}
+
+.plusbutton {
+    position: absolute;
+    bottom: 90px;
+    right: 100px;
+    width: 60px;
+    height: 60px;
+    background-color: #4466dd;
+    color: white !important;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 240% !important;
 }

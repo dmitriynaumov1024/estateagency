@@ -50,3 +50,5 @@ E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razo
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Bookmarks.cshtml.g.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Account.cshtml.g.cs
 E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\DeleteObject.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\CreateWish.cshtml.g.cs
+E:\Proj_1\estateagency\EstateAgency\EstateAgencyWeb\obj\Debug\netcoreapp3.1\Razor\Views\Home\Wishes.cshtml.g.cs

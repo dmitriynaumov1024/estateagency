@@ -3,10 +3,49 @@
 
 @{
     Layout = "_Basic";
-    ViewData["Title"] = "New object";
+    ViewData["Title"] = "New flat";
 }
 
-<h2>New flat</h2>
-<form asp-action="Post" method="post">
-    
+<h2>New house</h2>
+<form asp-action="Post_Stage2" method="post" class="customcard container20em" enctype="multipart/form-data">
+    <input type="hidden" name="location" value="@ViewData["location"]" />
+    <input type="hidden" name="variant" value="@ViewData["variant"]" />
+
+    <label>Назва вулиці:</label>
+    <input name="streetname" type="text" maxlength="64" placeholder="Приклад: проспект Соборний" />
+
+    <label>Номер будинку:</label>
+    <input name="housenumber" type="text" maxlength="5" style="width: 8em;" />
+
+    <label>Номер квартири:</label>
+    <input name="flatnumber" type="text" maxlength="4" style="width: 8em;" />
+
+    <label>Площа квартири, кв.м:</label>
+    <input name="homearea" type="text" maxlength="7" style="width: 8em;" />
+
+    <label>Поверх:</label>
+    <input name="floor" type="text" maxlength="3" style="width: 8em;" />
+
+    <label>Кількість кімнат:</label>
+    <input name="roomcount" type="text" maxlength="2" style="width: 8em;" />
+
+    <label>Опис об'єкта:</label>
+    <textarea name="description" style="resize:none; height: 10em;"></textarea>
+
+    <label>Стан [0..5]:</label>
+    <input name="state" type="text" maxlength="1" style="width: 8em;" />
+
+    <label>Ціна, USD:</label>
+    <input type="text" maxlength="7" name="price" style="width: 8em;" />
+
+    <label>Теги:</label>
+    <textarea name="tags" placeholder="Enter tags here, ex.: water, gas, electricity" style="resize:none;"></textarea>
+
+    <label>Фото:</label>
+    <input name="photos" type="file" accept="image/*" multiple required />
+    <br />
+    <p style="color:darkred; font-weight:bold;">@ViewData["ErrorMessage"] &ensp;</p>
+    <br />
+    <button type="submit">Завершити</button>
 </form>
+

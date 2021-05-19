@@ -1,0 +1,47 @@
+﻿@using EstateAgency.Database;
+
+@{     
+    Layout = "_Basic";
+    ViewData["Title"] = "My wishes";
+    ViewData["script"] = "site-createwish.js";
+}
+
+<h2>Побажання клієнта</h2>
+<form asp-action="CreateWish" method="post" class="customcard container20em">
+    <label>Область:</label>
+    <select id="regionselect">
+        @foreach (string i in DbAdvanced.Regions)
+        {
+            <option value="@i">@i </option>
+        }
+    </select>
+
+    <label>Населений пункт:</label>
+    <select id="townselect">
+    </select>
+
+    <label>Район (необов'язково):</label>
+    <select name="location" id="districtselect">
+    </select>
+
+    <label>Тип нерухомості:</label>
+    <select name="variant" id="variantselect">
+        <option value="h">Будинок</option>
+        <option value="f">Квартира</option>
+        <option value="l">Земельна ділянка</option>
+        <option value="o">Інше</option>
+    </select>
+
+    <label>Максимальна ціна:</label>
+    <input type="text" name="price" />
+
+    <label>Теги:</label>
+    <textarea name="tags" placeholder="Enter tags here, ex.: water, gas, electricity"></textarea>
+
+    <label>Необхідний стан [0..5]:</label>
+    <input name="state" type="text" maxlength="1" style="width: 8em;" />
+    <br />
+    <p style="color:darkred; font-size:80%;"> @ViewData["ErrorMessage"] &ensp;</p>
+    <br />
+    <button type="submit">Продовжити</button>
+</form>
