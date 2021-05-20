@@ -1,6 +1,5 @@
 select
     _key,
-    _val,
     Price,
     LocationID,
     PostDate
@@ -8,7 +7,7 @@ from
     "estateobject".Houses
 where
     LocationID=0 and 
-    Price<10000 and 
+    Price<16000 and 
     isOpen=true
 order by 
     PostDate desc,
@@ -44,3 +43,10 @@ from
 join
     "location".Locations as L
 on A.LocationID=L._key;
+
+delete from "estateobject".Houses 
+where 
+    Price<1000 or 
+    Price is null or
+    length(Description)<30 or 
+    Description is null;

@@ -95,9 +95,11 @@ namespace EstateAgencyWeb.Controllers
                 LocationID = int.Parse(Request.Form["location"]), 
                 StreetName = Request.Form["street"],
                 HouseNumber = Request.Form["housenumber"],
-                FlatNumber = short.Parse(Request.Form["flatnumber"]),
                 RegDate = DateTime.UtcNow 
             };
+            short flatnumber;
+            if (short.TryParse(Request.Form["flatnumber"], out flatnumber)) 
+                p.FlatNumber = flatnumber;
             var v = p.Validate;
             if(!v.isValid) 
             { 
@@ -374,7 +376,7 @@ namespace EstateAgencyWeb.Controllers
             if(DbClient.PersonCache.TryGet((int)personid, out p)) 
             {
                 Location l = DbClient.LocationCache.Get(p.LocationID);
-                ViewData["Location"] = $"{l.Region} область, {l.Town}, {(l.District.Length<2? l.District + " район, ": "")} {p.StreetName}, {p.HouseNumber}{(p.FlatNumber>0? ", кв. " + p.FlatNumber.ToString(): "")}";
+                ViewData["Location"] = $"{l.Region} область, {l.Town}, {(l.District.Length>1? (l.District + " район, "): "")} {p.StreetName}, {p.HouseNumber}{(p.FlatNumber>0? ", кв. " + p.FlatNumber.ToString(): "")}";
                 return View("Account", p);
             }
             else return new UnauthorizedResult();
@@ -451,6 +453,7 @@ namespace EstateAgencyWeb.Controllers
             int? personid = HttpContext.Session.GetInt32("PersonID");
             if (personid==null)
                 return new UnauthorizedResult();
+            ViewData["LoggedIn"]=true;
             Dictionary<int, ClientWish> wishes = DbAdvanced.GetWishesByPerson((int)personid);
             return View ("Wishes", wishes);
         }
@@ -460,7 +463,7 @@ namespace EstateAgencyWeb.Controllers
             int? personid = HttpContext.Session.GetInt32("PersonID");
             if (personid==null)
                 return new UnauthorizedResult();
-
+            ViewData["LoggedIn"]=true;
             ClientWish wish; 
             if (DbClient.ClientWishCache.TryGet(wishid, out wish)) 
             { 

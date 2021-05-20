@@ -1,0 +1,156 @@
+0: jdbc:ignite:thin://127.0.0.1> insert into "estateobject".Houses (
+. . . . . . . . . . . . . . . )> _key, Price, Description)
+. . . . . . . . . . . semicolon> values
+. . . . . . . . . . . semicolon> (45, 1200, 'too short'),
+. . . . . . . . . . . semicolon> (46, 999, 'Description example description example description'),
+. . . . . . . . . . . semicolon> (47, 1001, 'Description example, description example, example description');
+3 rows affected (0.231 seconds)
+
+0: jdbc:ignite:thin://127.0.0.1> !outputformat vertical
+0: jdbc:ignite:thin://127.0.0.1> insert into "estateobject".Houses (
+. . . . . . . . . . . . . . . )> _key, Description)
+. . . . . . . . . . . semicolon> values
+. . . . . . . . . . . semicolon> (48, 'too short'),
+. . . . . . . . . . . semicolon> (50, 'Description example description example description'),
+. . . . . . . . . . . semicolon> (49, 'Description example, description example, example description');
+3 rows affected (0.047 seconds)
+
+0: jdbc:ignite:thin://127.0.0.1> select _key, Price, Description, length(Description) as Length from "estateobject".Houses;
+_KEY         1
+PRICE        12333
+DESCRIPTION  Here should be description, but I am lazy x2 to write it. Sorry x2.
+
+LENGTH       67
+
+_KEY         3
+PRICE        10200
+DESCRIPTION  aaaaaaa aaaaaaaaaa aaaaaaaaaa aaa aaaaaaaaaaaaa aaaaa aaaaaaaaaaaaa aaaaa aaaaaaaaaaaaa aaaaaa aaaaaaaaaaaaa aaaaa aaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaa
+LENGTH       149
+
+_KEY         4
+PRICE        12333
+DESCRIPTION  aa aaaaaa aaaaaaaa aaaaaa aaaaaaaaaaaaaa aa aaa
+LENGTH       47
+
+_KEY         5
+PRICE        12333
+DESCRIPTION  aaa aaaaa aaaaaaaaaaa aa aaaaaaaaaaaaa aaa aa ffafaf eafafeefaaef
+LENGTH       65
+
+_KEY         6
+PRICE        123333
+DESCRIPTION  aaaa aaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aa aaaaaaaaaaaaaa
+LENGTH       109
+
+_KEY         7
+PRICE        12333
+DESCRIPTION  sdfsdddfdfsa dsadfsadfdsdasf dasffffffffffffff sdafdaaff asfsfsdfssdffsfsd sfdsaffasfsa
+LENGTH       87
+
+_KEY         8
+PRICE        123333
+DESCRIPTION  aaaaaaaa aaaaaaaaa aaaaaaaaaaaaaa aaaaaaaaaa aa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaaa
+LENGTH       94
+
+_KEY         9
+PRICE        80000
+DESCRIPTION  Будинок площею 92 кв.м в Олександрівському районі
+LENGTH       49
+
+_KEY         10
+PRICE        26100
+DESCRIPTION  2-поверховий будинок в с.Біленьке. 2 поверхи. 8 кімнат. Житлова площа 189 кв.м. Стан відмінний. Ремонт зроблено в травні 2020 року. Є вода, газ, електропостачання.
+LENGTH       164
+
+_KEY         45
+PRICE        1200
+DESCRIPTION  too short
+LENGTH       9
+
+_KEY         46
+PRICE        999
+DESCRIPTION  Description example description example description
+LENGTH       51
+
+_KEY         47
+PRICE        1001
+DESCRIPTION  Description example, description example, example description
+LENGTH       61
+
+_KEY         48
+PRICE        null
+DESCRIPTION  too short
+LENGTH       9
+
+_KEY         49
+PRICE        null
+DESCRIPTION  Description example, description example, example description
+LENGTH       61
+
+_KEY         50
+PRICE        null
+DESCRIPTION  Description example description example description
+LENGTH       51
+
+15 rows selected (0.056 seconds)
+0: jdbc:ignite:thin://127.0.0.1> delete from "estateobject".Houses
+. . . . . . . . . . . semicolon> where
+. . . . . . . . . . . semicolon>     Price<1000 or
+. . . . . . . . . . . semicolon>     Price is null or
+. . . . . . . . . . . semicolon>     length(Description)<30 or
+. . . . . . . . . . . semicolon>     Description is null;
+5 rows affected (0.055 seconds)
+0: jdbc:ignite:thin://127.0.0.1> select _key, Price, Description, length(Description) as Length from "estateobject".Houses;
+_KEY         1
+PRICE        12333
+DESCRIPTION  Here should be description, but I am lazy x2 to write it. Sorry x2.
+
+LENGTH       67
+
+_KEY         3
+PRICE        10200
+DESCRIPTION  aaaaaaa aaaaaaaaaa aaaaaaaaaa aaa aaaaaaaaaaaaa aaaaa aaaaaaaaaaaaa aaaaa aaaaaaaaaaaaa aaaaaa aaaaaaaaaaaaa aaaaa aaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaa
+LENGTH       149
+
+_KEY         4
+PRICE        12333
+DESCRIPTION  aa aaaaaa aaaaaaaa aaaaaa aaaaaaaaaaaaaa aa aaa
+LENGTH       47
+
+_KEY         5
+PRICE        12333
+DESCRIPTION  aaa aaaaa aaaaaaaaaaa aa aaaaaaaaaaaaa aaa aa ffafaf eafafeefaaef
+LENGTH       65
+
+_KEY         6
+PRICE        123333
+DESCRIPTION  aaaa aaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aa aaaaaaaaaaaaaa
+LENGTH       109
+
+_KEY         7
+PRICE        12333
+DESCRIPTION  sdfsdddfdfsa dsadfsadfdsdasf dasffffffffffffff sdafdaaff asfsfsdfssdffsfsd sfdsaffasfsa
+LENGTH       87
+
+_KEY         8
+PRICE        123333
+DESCRIPTION  aaaaaaaa aaaaaaaaa aaaaaaaaaaaaaa aaaaaaaaaa aa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaaa
+LENGTH       94
+
+_KEY         9
+PRICE        80000
+DESCRIPTION  Будинок площею 92 кв.м в Олександрівському районі
+LENGTH       49
+
+_KEY         10
+PRICE        26100
+DESCRIPTION  2-поверховий будинок в с.Біленьке. 2 поверхи. 8 кімнат. Житлова площа 189 кв.м. Стан відмінний. Ремонт зроблено в травні 2020 року. Є вода, газ, електропостачання.
+LENGTH       164
+
+_KEY         47
+PRICE        1001
+DESCRIPTION  Description example, description example, example description
+LENGTH       61
+
+10 rows selected (0.041 seconds)
+0: jdbc:ignite:thin://127.0.0.1>
