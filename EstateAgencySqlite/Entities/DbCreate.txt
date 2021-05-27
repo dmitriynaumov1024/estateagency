@@ -1,0 +1,75 @@
+pragma foreign_keys=ON;
+
+create table if not exists Location (
+	Id integer primary key autoincrement,
+	Region text,
+	Town text,
+	District text
+);
+
+create table if not exists Person (
+    Id integer primary key autoincrement,
+    Name text,
+    Surname text,
+    Email text,
+    Phone text,
+    LocationId integer default 0,
+    Address text,
+    RegDate text,
+    foreign key (LocationId) references Location (Id) on update cascade on delete set default
+);
+
+create table if not exists Agent (
+    Id integer primary key,
+    TotalDeals integer,
+    MonthDeals integer,
+    MonthPayment integer,
+    foreign key (Id) references Person (Id) on update cascade on delete restrict
+);
+
+create table if not exists ClientWish (
+    Id integer primary key autoincrement,
+    PersonId integer,
+    Variant text,
+    LocationId integer default 0,
+    Price integer,
+    PostDate text,
+    foreign key (PersonId) references Person (Id) on update cascade on delete cascade,
+    foreign key (LocationId) references Location (Id) on update cascade on delete set default
+);
+
+create table if not exists EstateObject (
+    Id integer primary key autoincrement,
+    SellerId integer,
+    isOpen integer,
+    LocationId integer default 0,
+    Price integer,
+    PostDate text,
+    Variant text,
+    Description text,
+    foreign key (SellerId) references Person (Id) on update cascade on delete cascade,
+    foreign key (LocationId) references Location (Id) on update cascade on delete set default
+);
+
+create table if not exists Bookmark (
+    PersonId integer,
+    ObjectId integer,
+    primary key (PersonId, ObjectId),
+    foreign key (PersonId) references Person (Id) on update cascade on delete cascade,
+    foreign key (ObjectId) references EstateObject (Id) on update cascade on delete cascade
+);
+
+create table if not exists Deal (
+    Id integer primary key,
+    SellerId integer,
+    BuyerId integer,
+    AgentId integer,
+    Price integer,
+    DealDate text,
+    foreign key (SellerId) references Person (Id) on update cascade on delete restrict,
+    foreign key (BuyerId) references Person (Id) on update cascade on delete restrict,
+    foreign key (AgentId) references Agent (Id) on update cascade on delete restrict
+);
+
+create unique index if not exists PersonPhone
+    on Person (Phone);

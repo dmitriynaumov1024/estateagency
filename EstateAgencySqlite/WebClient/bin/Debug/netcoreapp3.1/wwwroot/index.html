@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Estate agency</title>
+    <link rel="stylesheet" href="css/site.css" />
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+</head>
+<body onload="site_main()">
+    <div id="navigation-panel">
+        <div id="companyname">Estate agency</div>
+        <button id="menu0person"> People </button>
+        <button id="menu0agent"> Agents </button>
+        <button id="menu0estateobject"> Estate objects </button>
+        <button id="menu0clientwish"> Client wishes </button>
+        <button id="menu0bookmark"> Bookmarks </button>
+        <button id="menu0deal"> Deals </button>
+        <button id="menu0location"> Locations </button>
+        <br/>
+        <br/>
+        <button id="menu0rawsql"> Raw SQL &gt; </button>
+        <div id="copyright">&copy; 2021 - Dmitriy Naumov</div>
+    </div>
+    <div id="main">
+        <h2>Welcome!<br/></h2>
+        <p style="text-align:center;">Here is some test data to look at. <br/> Select a table on the navigation panel to get started.</p>
+        <table class="dataview">
+            <tr>
+                <td>1</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+            </tr>
+        </table>
+    </div>
+    <script src="js/site.js"></script>
+</body>
+</html>

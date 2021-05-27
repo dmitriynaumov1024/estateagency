@@ -1,0 +1,23 @@
+pragma foreign_keys=ON;
+
+create table Location (
+	Id integer primary key autoincrement,
+	Region text,
+	Town text,
+	District text
+);
+
+create table Person (
+    Id integer primary key autoincrement,
+    Name text,
+    Surname text,
+    Email text,
+    Phone text,
+    LocationId integer default 0,
+    Address text,
+    RegDate text,
+    foreign key (LocationId) references Location (Id) on update cascade on delete set default
+);
+
+create unique index PersonPhone
+    on Person (Phone);

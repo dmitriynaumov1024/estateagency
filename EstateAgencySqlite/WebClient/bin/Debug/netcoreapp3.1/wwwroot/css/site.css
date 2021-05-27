@@ -1,0 +1,192 @@
+﻿* {
+    font-family: "Verdana" !important;
+    box-sizing: border-box;
+}
+
+html {
+    height:100%;
+}
+
+body {
+    background-color:#fdfdfe;
+    margin:0;
+    width:100%;
+    height:100%;
+    position:fixed;
+}
+p { color: #444444; }
+
+#navigation-panel {
+    border-right: 1px solid #bbbbbb;
+    background-color: #fdfdfe;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 28%;
+    height: 100%;
+    box-shadow: 0 0 6px 1px #bbbbbb;
+    user-select: none !important;
+    cursor: default !important;
+}
+
+#navigation-panel>button {
+    -webkit-appearance: none;
+    display: block;
+    width: 100%;
+    padding: 1em;
+    transition-duration: 0.2s;
+    background-color: inherit;
+    text-align: left;
+    outline: none;
+    border: none;
+}
+
+#navigation-panel>button:hover {
+    background-color: #eef2fe;
+}
+
+#navigation-panel>button:focus {
+    background-color: #c6cff4;
+    border-right: 3px solid #a5b0e0;
+    color:#000000;
+}
+
+table.dataview {
+    width: 100%;
+    border-spacing: 2px 4px;
+}
+
+table.dataview td {
+    background-color: #f4f7fe;
+    padding: 0.5em;
+    vertical-align: top;
+}
+
+table.dataview tr:hover td {
+    background-color: #eef2fe;
+}
+
+#main {
+    font-size: 80%;
+    position: absolute;
+    top: 0;
+    left: 28%;
+    width: 72%;
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 100px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#main::-webkit-scrollbar{width:0px}
+
+#navigation-panel>#copyright {
+    position:absolute;
+    bottom:0px;
+    width:100%;
+    padding:1.35em;
+    font-size:60%;
+    background-color:inherit;
+}
+
+#navigation-panel>#companyname {
+    display:block;
+    font-size:150%;
+    padding: 0.5em;
+    line-height: 250%;
+    color: #222244;
+}
+input[type=text], textarea {
+    padding: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    border-bottom: 2px solid #fefeff;
+    transition-duration: 0.3s;
+    margin: 0;
+    width: 100%;
+    resize: none;
+}
+
+input[type=text]:focus, textarea:focus {
+    border-bottom: 2px solid #a5b0e0;
+}
+
+#main h2 {
+    display: block;
+    font-size: 150%;
+    line-height: 250%;
+    color: #222244;
+    text-align: center;
+    font-weight: normal;
+}
+
+th {
+    cursor: default;
+    user-select: none;
+}
+
+button.primary {
+    appearance:none;
+    -webkit-appearance:none;
+    font-size: inherit;
+    outline:none;
+    border:none;
+    box-sizing:border-box;
+    color: #fefeff;
+    background-color: #222244;
+    transition-duration: 0.3s;
+    display:block;
+    width:100%;
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+button.primary:hover {
+    background-color: #333355;
+}
+
+button.primary:focus {
+    background-color: #333355;
+}
+
+button.secondary {
+    appearance: none;
+    -webkit-appearance: none;
+    font-size: inherit;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    background-color: inherit;
+    color: inherit;
+    transition-duration: 0.3s;
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+button.secondary:hover {
+    background-color: #eef2fe;
+}
+
+button.secondary:focus {
+    background-color: inherit;
+    text-decoration: underline;
+}
+
+input.error {
+    background-color: #fe9994;
+    color: #563433;
+}
+
+button#menu0rawsql:focus {
+    background-color: #fe9994;
+    color: #882222;
+    font-weight: bold;
+    border-right: 3px solid #882222;
+}
